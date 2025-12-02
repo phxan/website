@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>個人投資組合儀表板 (V19 - 欄位絕對定位修正)</title>
+    <title>個人投資組合儀表板 (V20 - 最終數據穩定版)</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
         /* 基礎佈局與字體 (保持不變) */
@@ -39,7 +39,6 @@
             padding: 20px; 
             border-radius: 5px; 
             box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
-            /* 保持足夠的高度 */
             height: 380px; 
             display: flex; 
             flex-direction: column;
@@ -230,10 +229,11 @@
             
             const response = await fetch(proxyUrl);
             
-            if (!response.ok) throw new Error('網路回應錯誤。');
+            if (!response.ok) throw new Error('網路回應錯誤 (可能為 CORS 或代理服務問題)。');
             
             const data = await response.text();
             
+            // 跳過 CSV 標題行 (通常是第一行)
             const rows = data.split(/\r\n|\n/).slice(1);
             
             const portfolioData = rows.map(row => {
@@ -241,27 +241,39 @@
                 
                 const cols = parseCSVLine(row);
                 
-                // 檢查至少要有 13 個欄位 (A 到 M)，否則可能是無效行或總計行
-                if (cols.length < 13) return null; 
+                // 檢查至少要有足夠的欄位來解析到損益(L欄/Index 11)，放寬至 > 10
+                if (cols.length < 11) return null; 
 
                 const cleanNum = (str) => {
                     const cleanedStr = str.replace(/,/g, '').replace(/%/g, '');
+                    // 如果是空字串，返回 0
+                    if (cleanedStr.trim() === '') return 0;
                     return parseFloat(cleanedStr) || 0;
                 };
 
-                // *** V19 修正: 欄位絕對定位，確保數據準確 ***
-                // 根據 Google Sheet (A:M)
-                // A=0, B=1, J=9, K=10, L=11, M=12
-                
-                return {
-                    code: cols[0],             // 代碼 (A欄, Index 0)
-                    name: cols[1],             // 股票名稱 (B欄, Index 1)
-                    cost: cleanNum(cols[9]),   // 庫存成本 (J欄, Index 9)
-                    value: cleanNum(cols[10]), // 庫存現值 (K欄, Index 10)
-                    pl: cleanNum(cols[11]),    // 庫存損益 (L欄, Index 11) 
-                    pct: cleanNum(cols[12])    // 庫存損益% (M欄, Index 12)
-                };
-            }).filter(item => item !== null && item.value > 0); // 過濾掉市值為 0 的項目
+                // *** V20 修正: 欄位絕對定位，並使用 try-catch 確保數值解析不會崩潰 ***
+                // 根據 Google Sheet (A:M)，欄位 Index 為 A=0, B=1, J=9, K=10, L=11, M=12
+                try {
+                    return {
+                        code: cols[0],             
+                        name: cols[1],             
+                        cost: cleanNum(cols[9]),   
+                        value: cleanNum(cols[10]), 
+                        pl: cleanNum(cols[11]),    
+                        pct: cleanNum(cols[12])    
+                    };
+                } catch(e) {
+                    // 如果單行解析出錯，忽略該行
+                    console.warn(`忽略無效資料行: ${row}`, e);
+                    return null;
+                }
+            }).filter(item => item !== null && item.cost !== 0); // 過濾掉成本為 0 的項目
+
+            // 檢查是否沒有數據
+            if (portfolioData.length === 0) {
+                 throw new Error("解析後沒有有效的投資組合數據 (所有項目成本皆為 0 或格式不符)。");
+            }
+
 
             window.lastPortfolioData = portfolioData; 
             updateDashboard(portfolioData);
@@ -276,6 +288,14 @@
                 錯誤訊息: ${error.message}
             </td></tr>`;
             document.getElementById('lastUpdated').innerText = '更新失敗';
+
+            // 重置 KPI 為 0，避免顯示 "-"
+            document.getElementById('kpi-cost').innerText = '0';
+            document.getElementById('kpi-value').innerText = '0';
+            document.getElementById('kpi-pl').innerText = '0';
+            document.getElementById('kpi-pct').innerText = '0.00%';
+            document.getElementById('kpi-pl').className = 'kpi-value';
+            document.getElementById('kpi-pct').className = 'kpi-value';
         }
     }
 
@@ -291,11 +311,11 @@
         document.getElementById('kpi-value').innerText = parseInt(totalValue).toLocaleString();
         
         const plEl = document.getElementById('kpi-pl');
-        plEl.innerText = (totalPL > 0 ? '+' : '') + parseInt(totalPL).toLocaleString();
+        plEl.innerText = (totalPL >= 0 ? '+' : '') + parseInt(totalPL).toLocaleString();
         plEl.className = `kpi-value ${totalPL >= 0 ? 'positive' : 'negative'}`;
         
         const pctEl = document.getElementById('kpi-pct');
-        pctEl.innerText = (totalPct > 0 ? '+' : '') + totalPct.toFixed(2) + '%';
+        pctEl.innerText = (totalPct >= 0 ? '+' : '') + totalPct.toFixed(2) + '%';
         pctEl.className = `kpi-value ${totalPct >= 0 ? 'positive' : 'negative'}`;
 
         // 3. 更新圖表
@@ -347,7 +367,7 @@
                 },
                 layout: {
                     padding: {
-                        left: 45, // V17/V18/V19 保持極限值
+                        left: 45, // 保持極限值
                         right: 10,
                         top: 5,
                         bottom: 40 
@@ -359,6 +379,9 @@
                          ticks: {
                             font: {
                                 size: 12 
+                            },
+                             callback: function(value) {
+                                return value.toLocaleString(); // 增加千分位
                             }
                         }
                     },
@@ -407,8 +430,14 @@
                 scales: {
                     y: {
                         beginAtZero: false,
+                        // 讓 Y 軸範圍稍微超出最大/最小值，視覺效果較佳
                         min: Math.min(...plChartData.map(d => d.pl)) * 1.15, 
-                        max: Math.max(...plChartData.map(d => d.pl)) * 1.15
+                        max: Math.max(...plChartData.map(d => d.pl)) * 1.15,
+                        ticks: {
+                             callback: function(value) {
+                                return value.toLocaleString(); // 增加千分位
+                            }
+                        }
                     },
                     x: {
                          ticks: {
