@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>個人投資組合儀表板 (最終修正 V10 - 徹底解決圖表邊界裁切)</title>
+    <title>個人投資組合儀表板 (最終修正 V11 - 外部 CSS 邊界修復)</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
         /* 基礎佈局與字體 (保持不變) */
@@ -39,13 +39,18 @@
             padding: 20px; 
             border-radius: 5px; 
             box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
-            /* *** 最終修正 1: 再次增加卡片高度到 320px *** */
-            height: 320px; 
+            /* *** 最終修正 1: 卡片高度增加到 340px *** */
+            height: 340px; 
             display: flex; 
             flex-direction: column;
         }
         
         .chart-card canvas { flex-grow: 1; max-height: 100%; }
+        
+        /* *** 最終修正 2: 強制 TopHoldingsChart 的 Canvas 底部留白，推開邊界 *** */
+        #topHoldingsChart {
+            margin-bottom: 25px; /* 增加 25px 外部底部空間 */
+        }
         
         .table-container { background: #fff; padding: 20px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; margin-top: 10px; min-width: 600px; }
@@ -334,12 +339,13 @@
                 maintainAspectRatio: false, 
                 plugins: { 
                     legend: { display: false },
+                    // *** 最終修正 3: 移除內部 padding.bottom，改由外部 CSS 控制 ***
                     layout: {
                         padding: {
-                            left: 80, // 確保左側有足夠空間
+                            left: 80, 
                             right: 10,
-                            top: 5,
-                            bottom: 20 // 確保底部有足夠空間
+                            top: 5
+                            // 底部 padding 移除
                         }
                     },
                 },
@@ -348,7 +354,7 @@
                         beginAtZero: true
                     },
                     y: {
-                        // *** 最終修正 2: 縮小 Y 軸標籤字體大小至 10px，減少垂直佔用空間 ***
+                        // 標籤字體大小保持 10px
                         ticks: {
                             font: {
                                 size: 10 
@@ -387,7 +393,6 @@
                         beginAtZero: false,
                         min: Math.min(...plChartData.map(d => d.pl)) * 1.15 
                     },
-                    // *** 修正 3: 縮小 X 軸標籤字體大小至 10px，確保不被裁切 ***
                     x: {
                          ticks: {
                             font: {
