@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>個人投資組合儀表板 (最終修正 V17 - 視覺極限平衡)</title>
+    <title>個人投資組合儀表板 (V18 - 資料解析修正)</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
         /* 基礎佈局與字體 (保持不變) */
@@ -244,13 +244,21 @@
 
                 const cleanNum = (str) => parseFloat(str.replace(/,/g, '').replace(/%/g, '')) || 0;
 
+                // *** V18 修正: 重新定位庫存成本/現值/損益/百分比，以應對欄位錯位 ***
+                // 由於欄位可能因為 CSV 輸出而錯位，我們改用從陣列尾端回推的方式定位。
+                const totalColumns = cols.length;
+                const plColumn = totalColumns - 2; // 庫存損益是倒數第二欄
+                const pctColumn = totalColumns - 1; // 庫存損益%是倒數第一欄
+                const valueColumn = totalColumns - 3; // 庫存現值是倒數第三欄
+                const costColumn = totalColumns - 4; // 庫存成本是倒數第四欄
+                
                 return {
                     code: cols[0],
                     name: cols[1],
-                    cost: cleanNum(cols[8]),    
-                    value: cleanNum(cols[9]),   
-                    pl: cleanNum(cols[10]),     
-                    pct: cleanNum(cols[11])     
+                    cost: cleanNum(cols[costColumn]),    
+                    value: cleanNum(cols[valueColumn]),   
+                    pl: cleanNum(cols[plColumn]),     
+                    pct: cleanNum(cols[pctColumn])     
                 };
             }).filter(item => item !== null);
 
@@ -274,7 +282,7 @@
         // 1. 計算總計 (保持不變)
         const totalCost = data.reduce((acc, curr) => acc + curr.cost, 0);
         const totalValue = data.reduce((acc, curr) => acc + curr.value, 0);
-        const totalPL = totalValue - totalCost;
+        const totalPL = totalValue - totalCost; // 這裡我們使用成本和市值來計算總損益，因為單筆損益可能因抓取問題不準確。
         const totalPct = totalCost > 0 ? (totalPL / totalCost) * 100 : 0;
 
         // 2. 更新 KPI 卡片 (保持不變)
@@ -282,6 +290,9 @@
         document.getElementById('kpi-value').innerText = parseInt(totalValue).toLocaleString();
         
         const plEl = document.getElementById('kpi-pl');
+        // 這裡顯示的 KPI 總損益，我們計算自總市值 - 總成本，以確保數據一致性
+        const kpiPL = data.reduce((acc, curr) => acc + curr.pl, 0); // 這裡用單獨抓取的 PL 總和 (雖然可能有錯位，但仍需要展示)
+        
         plEl.innerText = (totalPL > 0 ? '+' : '') + parseInt(totalPL).toLocaleString();
         plEl.className = `kpi-value ${totalPL >= 0 ? 'positive' : 'negative'}`;
         
@@ -337,11 +348,10 @@
                 },
                 layout: {
                     padding: {
-                        // *** V17 最終修正: 降低左側 padding 到 45 (極限優化，以對齊「前」字) ***
+                        // 保持 V17 極限值
                         left: 45, 
                         right: 10,
                         top: 5,
-                        // 保持底部 padding 40
                         bottom: 40 
                     }
                 },
@@ -350,7 +360,6 @@
                         beginAtZero: true,
                          ticks: {
                             font: {
-                                // 保持 X 軸字體 12px
                                 size: 12 
                             }
                         }
@@ -358,7 +367,6 @@
                     y: {
                         ticks: {
                             font: {
-                                // 保持 Y 軸字體 12px
                                 size: 12 
                             }
                         }
@@ -369,11 +377,14 @@
 
         // 圖表 2: 損益來源 (垂直柱狀圖)
         const sortedByPL = [...data].sort((a, b) => b.pl - a.pl);
-        const topGainers = sortedByPL.slice(0, 5);
-        const topLosers = sortedByPL.slice(-5);
+        // 確保至少有正有負的數據點
+        const topGainers = sortedByPL.filter(i => i.pl > 0).slice(-5);
+        const topLosers = sortedByPL.filter(i => i.pl < 0).slice(0, 5);
+        
+        // 合併並再次排序，確保最高的在左，最低的在右
         const plChartData = [...new Set([...topGainers, ...topLosers])]
                              .filter(item => item.pl !== 0)
-                             .sort((a, b) => b.pl - a.pl);
+                             .sort((a, b) => b.pl - a.pl); 
         
         chartInstance2 = new Chart(document.getElementById('plChart'), {
             type: 'bar',
@@ -392,22 +403,21 @@
                 plugins: { legend: { display: false } },
                 layout: {
                     padding: {
-                        // 保持底部 padding 60 (確保 X 軸標籤不裁切)
                         bottom: 60 
                     }
                 },
                 scales: {
                     y: {
                         beginAtZero: false,
-                        min: Math.min(...plChartData.map(d => d.pl)) * 1.15 
+                        // 讓 Y 軸範圍稍微超出最大/最小值，視覺效果較佳
+                        min: Math.min(...plChartData.map(d => d.pl)) * 1.15, 
+                        max: Math.max(...plChartData.map(d => d.pl)) * 1.15
                     },
                     x: {
                          ticks: {
                             font: {
-                                // 保持 X 軸字體 12px
                                 size: 12 
                             },
-                            // 保持 X 軸標籤旋轉角度
                             maxRotation: 45, 
                             minRotation: 45 
                         }
