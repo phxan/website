@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>個人投資組合儀表板 (最終修正 V8 - 解決邊界裁切問題)</title>
+    <title>個人投資組合儀表板 (最終修正 V9 - 解決橫向圖表底部裁切)</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
         /* 基礎佈局與字體 (保持不變) */
@@ -25,7 +25,7 @@
         .refresh-btn { background-color: #00aaff; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; transition: background 0.3s; }
         .refresh-btn:hover { background-color: #0090e0; }
         
-        /* KPI, Chart, Table 樣式 (保持不變) */
+        /* KPI, Chart, Table 樣式 */
         .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
         .kpi-card { background: #fff; padding: 20px; border-radius: 5px; border-top: 3px solid #00aaff; box-shadow: 0 2px 5px rgba(0,0,0,0.05); text-align: center; }
         .kpi-title { font-size: 0.9em; color: #888; margin-bottom: 5px; }
@@ -39,7 +39,8 @@
             padding: 20px; 
             border-radius: 5px; 
             box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
-            height: 250px; 
+            /* *** 修正 1: 增加卡片高度到 300px，為底部標籤留出空間 *** */
+            height: 300px; 
             display: flex; 
             flex-direction: column;
         }
@@ -333,16 +334,16 @@
                 maintainAspectRatio: false, 
                 plugins: { 
                     legend: { display: false },
-                    // *** 最終修正：加大 Chart.js 內部左側內邊距到 80，以超額緩衝處理最長標籤裁切問題 ***
+                    // *** 修正 2: 內部左側邊距最大化 (80px) ***
                     layout: {
                         padding: {
-                            left: 80, // 增加到 80px 緩衝
+                            left: 80, 
                             right: 10,
                             top: 5,
-                            bottom: 5
+                            /* *** 修正 3: 增加底部邊距到 20px，避免最底下的標籤被裁切 *** */
+                            bottom: 20 
                         }
                     },
-                    // 確保 X 軸的刻度線完整顯示
                     scales: {
                         x: {
                             beginAtZero: true
@@ -375,12 +376,11 @@
                 responsive: true,
                 maintainAspectRatio: false, 
                 plugins: { legend: { display: false } },
-                // *** 修正：確保 Y 軸下方留白，避免負值柱狀圖被裁切 ***
+                // 確保 Y 軸下方留白，避免負值柱狀圖被裁切 (保持不變)
                 scales: {
                     y: {
                         beginAtZero: false,
-                        // 增加 y 軸下邊距，確保負值標籤和柱狀圖完整
-                        min: Math.min(...plChartData.map(d => d.pl)) * 1.15 // 擴展到最小值下方 15%
+                        min: Math.min(...plChartData.map(d => d.pl)) * 1.15 
                     }
                 }
             }
