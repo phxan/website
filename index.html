@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>個人投資組合儀表板 (V30 - 偵錯模式)</title>
+    <title>個人投資組合儀表板 (V31 - 核心存股修復版)</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
         /* 基礎佈局與字體 (V17 樣式) */
@@ -149,7 +149,7 @@
         <div id="core" class="tab-content">
             <div class="header" style="border-top: 3px solid #28a745;">
                 <div>
-                    <h1>核心存股總覽 (V30 偵錯模式)</h1>
+                    <h1>核心存股總覽</h1>
                     <p>資料來源：Google 試算表 (GID: 837341455) | <span id="coreLastUpdated">尚未載入...</span></p>
                 </div>
                 <button class="refresh-btn" onclick="fetchCoreData()">重新整理核心數據</button>
@@ -182,18 +182,34 @@
                 </div>
             </div>
 
-            <div class="charts-container" style="display: none;">
-                <div class="chart-card"><canvas id="coreProportionChart"></canvas></div>
-                <div class="chart-card"><canvas id="coreAssetChart"></canvas></div>
-                <div class="chart-card"><canvas id="corePLChart"></canvas></div>
+            <div class="charts-container">
+                <div class="chart-card">
+                    <h3>核心持股市值比例</h3>
+                    <canvas id="coreProportionChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h3>核心資產股債比例</h3>
+                    <canvas id="coreAssetChart"></canvas>
+                </div>
+                <div class="chart-card" style="grid-column: 1 / span 2; height: 350px;">
+                    <h3>核心資產損益分佈</h3>
+                    <canvas id="corePLChart"></canvas>
+                </div>
             </div>
 
             <div class="table-container">
-                <h3>核心持股明細 (V30 偵錯輸出)</h3>
+                <h3>核心持股明細</h3>
                 <table id="coreHoldingsTable">
                     <thead>
                         <tr>
-                            <th colspan="8" style="text-align: center; background-color: #ffe0b2;">原始 CSV 資料輸出區</th>
+                            <th>代碼</th>
+                            <th>名稱</th>
+                            <th>股債類型</th>
+                            <th>月配息</th>
+                            <th>年配息</th>
+                            <th>庫存現值</th>
+                            <th>庫存損益</th>
+                            <th>報酬率 %</th>
                         </tr>
                     </thead>
                     <tbody id="coreTableBody">
@@ -248,14 +264,15 @@
 
             if (targetTab === 'dashboard' && window.lastDashboardData) {
                 setTimeout(() => updateDashboardCharts(window.lastDashboardData), 50); 
-            } else if (targetTab === 'core' && !window.lastCoreData) {
-                // 首次點擊核心存股時，載入偵錯數據
-                fetchCoreData();
+            } else if (targetTab === 'core') {
+                // 點擊核心存股時，載入數據 (如果還沒有載入的話)
+                if (!window.lastCoreData) fetchCoreData();
+                else updateCoreCharts(window.lastCoreData, window.stockValue, window.bondValue);
             }
         });
     });
 
-    // CSV 解析器 (V17 穩定版本) - 為了保持 fetchData 穩定，此函數仍保留
+    // CSV 解析器 (V17 穩定版本)
     function parseCSVLine(text) {
         const result = [];
         let startValueIndex = 0;
@@ -282,8 +299,9 @@
     }
 
     const cleanNum = (str) => {
+        // 清理逗號、百分比符號，並處理負數
         const cleanedStr = String(str).replace(/,/g, '').replace(/%/g, '');
-        if (cleanedStr.trim() === '') return 0;
+        if (cleanedStr.trim() === '' || cleanedStr === '-') return 0;
         return parseFloat(cleanedStr) || 0;
     };
 
@@ -293,7 +311,6 @@
     // =========================================================
 
     async function fetchData() {
-        // ... (保持 V17 原始邏輯不變)
         document.getElementById('tableBody').innerHTML = '<tr><td colspan="6" class="loading">正在更新資料...</td></tr>';
         document.getElementById('lastUpdated').innerText = '更新中...';
 
@@ -308,6 +325,7 @@
             const portfolioData = rows.map(row => {
                 if (!row.trim()) return null;
                 const cols = parseCSVLine(row);
+                // V17 原始假設有 12 欄
                 if (cols.length < 12) return null; 
 
                 // V17 原始數據解析：錯誤的欄位定位 (I=8, J=9, K=10, L=11)
@@ -331,12 +349,11 @@
 
         } catch (error) {
             console.error('儀表板讀取失敗:', error);
-            document.getElementById('tableBody').innerHTML = `<tr><td colspan="6" class="negative" style="text-align:center"><strong>讀取資料失敗！</strong><br><small>請嘗試硬性重新整理 (Ctrl/Cmd + Shift + R)。</small></td></tr>`;
+            document.getElementById('tableBody').innerHTML = `<tr><td colspan="6" class="negative" style="text-align:center"><strong>儀表板讀取資料失敗！</strong><br><small>請檢查您的主表 GID ${DASHBOARD_GID} 是否已公開發布。</small></td></tr>`;
             document.getElementById('lastUpdated').innerText = '更新失敗';
         }
     }
 
-    // 儀表板 KPI 和 Charts 函數 (為了保持程式碼完整性，保留結構，但核心邏輯已在 V17 中確認穩定)
     function updateDashboard(data) {
         const totalCost = data.reduce((acc, curr) => acc + curr.cost, 0);
         const totalValue = data.reduce((acc, curr) => acc + curr.value, 0);
@@ -411,19 +428,10 @@
     }
 
     // =========================================================
-    // 核心存股資料處理 (V30 偵錯模式)
+    // 核心存股資料處理 (V31 核心修復)
     // =========================================================
 
     async function fetchCoreData() {
-        // 重置 KPI 為 '-' 
-        document.getElementById('core-kpi-value').innerText = '-';
-        document.getElementById('core-kpi-pl').innerText = '-';
-        document.getElementById('core-kpi-monthly-div').innerText = '-';
-        document.getElementById('core-kpi-annual-div').innerText = '-';
-        document.getElementById('core-kpi-yield').innerText = '-';
-        document.getElementById('core-kpi-ratio').innerText = '-';
-
-
         document.getElementById('coreTableBody').innerHTML = '<tr><td colspan="8" class="loading">正在讀取核心存股資料...</td></tr>';
         document.getElementById('coreLastUpdated').innerText = '更新中...';
 
@@ -433,36 +441,187 @@
             
             if (!response.ok) throw new Error('核心存股網路回應錯誤。');
             const data = await response.text();
+            // 忽略第一行標題
+            const rows = data.split(/\r\n|\n/).slice(1); 
             
-            // ==============================================================
-            // *** V30 偵錯模式：顯示原始 CSV 資料 ***
-            // 請將此處顯示的內容截圖或複製給我，以便確認欄位順序。
-            // ==============================================================
-            
-            document.getElementById('coreTableBody').innerHTML = `
-                <tr><td colspan="8" style="background: #fff8e1; border: 1px solid #ffcc80; padding: 15px;">
-                    <h4 style="color: #e65100;">🚨 偵錯模式：原始 CSV 內容 (請確認欄位與行數)</h4>
-                    <pre style="white-space: pre-wrap; word-break: break-all; font-size: 0.8em; text-align: left; max-height: 400px; overflow-y: auto;">${data}</pre>
-                </td></tr>
-            `;
-            // *** 偵錯模式結束 ***
+            const coreData = rows.map(row => {
+                if (!row.trim()) return null;
+                const cols = parseCSVLine(row);
+                // 檢查欄位數 (只有 10 欄)
+                if (cols.length < 10) return null; 
 
+                // *** V31 核心存股數據解析 (使用精確的 0-9 Index，並計算報酬率) ***
+                try {
+                    const cost = cleanNum(cols[3]);
+                    const value = cleanNum(cols[4]);
+                    const pl = cleanNum(cols[9]); // 讀取損益欄位
+                    
+                    const monthlyDiv = cleanNum(cols[6]); 
+                    const annualDiv = monthlyDiv * 12; 
+                    
+                    // 根據成本和市值/損益計算報酬率 % (修正 V29 錯誤)
+                    const pct = cost > 0 ? ((value - cost) / cost) * 100 : 0; 
+
+                    return {
+                        code: cols[0],             // 1. 代碼 (Index 0)
+                        name: cols[1],             // 2. 名稱 (Index 1)
+                        type: cols[5].trim(),      // 6. 類型 (Index 5)
+                        monthlyDiv: monthlyDiv,    // 7. 月配息 (Index 6)
+                        annualDiv: annualDiv,      // 計算值
+                        cost: cost,                // 4. 成本 (Index 3)
+                        value: value,              // 5. 市值 (Index 4)
+                        pl: pl,                    // 10. 庫存損益 (Index 9)
+                        pct: pct                   // 經計算後的值
+                    };
+                } catch(e) {
+                     console.warn(`核心存股資料解析失敗: ${row}`, e);
+                    return null;
+                }
+            }).filter(item => item !== null && item.cost !== 0); 
+
+            if (coreData.length === 0) throw new Error("核心存股解析後沒有有效的數據。");
+
+            window.lastCoreData = coreData; 
+            updateCoreDashboard(coreData);
+            
             const now = new Date();
-            document.getElementById('coreLastUpdated').innerText = `偵錯模式 (請提供 CSV 內容截圖): ${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}:${now.getSeconds().toString().padStart(2,'0')}`;
+            document.getElementById('coreLastUpdated').innerText = `最後更新: ${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}:${now.getSeconds().toString().padStart(2,'0')}`;
 
         } catch (error) {
             console.error('核心存股讀取失敗:', error);
-            document.getElementById('coreTableBody').innerHTML = `<tr><td colspan="8" class="negative" style="text-align:center"><strong>網路或讀取錯誤！</strong><br>錯誤: ${error.message}</td></tr>`;
+            document.getElementById('coreTableBody').innerHTML = `<tr><td colspan="8" class="negative" style="text-align:center"><strong>讀取核心存股資料失敗！</strong><br>錯誤: ${error.message}<br><small>請檢查您的 Google Sheet ${CORE_GID} 是否已公開為 CSV。</small></td></tr>`;
             document.getElementById('coreLastUpdated').innerText = '更新失敗';
         }
+    }
+
+    function updateCoreDashboard(data) {
+        // 1. 計算總計
+        const totalCost = data.reduce((acc, curr) => acc + curr.cost, 0);
+        const totalValue = data.reduce((acc, curr) => acc + curr.value, 0);
+        // 使用計算值，確保準確性 (雖然理論上應該等於單筆損益加總)
+        const calculatedTotalPL = totalValue - totalCost; 
+        const totalMonthlyDiv = data.reduce((acc, curr) => acc + curr.monthlyDiv, 0);
+        const totalAnnualDiv = data.reduce((acc, curr) => acc + curr.annualDiv, 0);
         
-        // 確保圖表被清空
+        // 總殖利率 (年配息 / 總市值)
+        const totalYield = totalValue > 0 ? (totalAnnualDiv / totalValue) * 100 : 0;
+
+        // 股債比例計算 (類型包含 '股' 或 '債')
+        const stockValue = data.filter(item => item.type && item.type.toLowerCase().includes('股')).reduce((acc, curr) => acc + curr.value, 0);
+        const bondValue = data.filter(item => item.type && item.type.toLowerCase().includes('債')).reduce((acc, curr) => acc + curr.value, 0);
+        const totalAsset = stockValue + bondValue;
+        const stockBondRatio = totalAsset > 0 ? `${(stockValue / totalAsset * 100).toFixed(0)} : ${(bondValue / totalAsset * 100).toFixed(0)}` : 'N/A';
+        
+        // 儲存股債市值供圖表使用
+        window.stockValue = stockValue;
+        window.bondValue = bondValue;
+
+        // 2. 更新 KPI 卡片
+        document.getElementById('core-kpi-value').innerText = parseInt(totalValue).toLocaleString();
+        
+        const plEl = document.getElementById('core-kpi-pl');
+        plEl.innerText = (calculatedTotalPL >= 0 ? '+' : '') + parseInt(calculatedTotalPL).toLocaleString();
+        plEl.className = `kpi-value ${calculatedTotalPL >= 0 ? 'positive' : 'negative'}`;
+        
+        document.getElementById('core-kpi-monthly-div').innerText = parseInt(totalMonthlyDiv).toLocaleString();
+        document.getElementById('core-kpi-annual-div').innerText = parseInt(totalAnnualDiv).toLocaleString();
+        document.getElementById('core-kpi-yield').innerText = totalYield.toFixed(2) + '%';
+        document.getElementById('core-kpi-ratio').innerText = stockBondRatio;
+
+        // 3. 更新圖表
+        updateCoreCharts(data, stockValue, bondValue);
+
+        // 4. 更新表格
+        const tableBody = document.getElementById('coreTableBody');
+        tableBody.innerHTML = '';
+        
+        [...data].sort((a, b) => b.value - a.value).forEach(item => {
+            const row = document.createElement('tr');
+            const plClass = item.pl >= 0 ? 'positive' : 'negative';
+            row.innerHTML = `
+                <td>${item.code}</td>
+                <td>${item.name}</td>
+                <td>${item.type}</td>
+                <td>${Math.round(item.monthlyDiv).toLocaleString()}</td>
+                <td>${Math.round(item.annualDiv).toLocaleString()}</td>
+                <td>${Math.round(item.value).toLocaleString()}</td>
+                <td class="${plClass}">${Math.round(item.pl).toLocaleString()}</td>
+                <td class="${plClass}">${item.pct.toFixed(2)}%</td>
+            `;
+            tableBody.appendChild(row);
+        });
+    }
+
+    function updateCoreCharts(data, stockValue, bondValue) {
         if (coreChart1) coreChart1.destroy();
         if (coreChart2) coreChart2.destroy();
         if (coreChart3) coreChart3.destroy();
-    }
+        
+        // 核心 Chart 1: 市值比例 (Pie/Doughnut Chart)
+        const topHoldings = [...data].sort((a, b) => b.value - a.value).slice(0, 8); 
+        const labels = topHoldings.map(i => i.name);
+        const values = topHoldings.map(i => i.value);
+        
+        coreChart1 = new Chart(document.getElementById('coreProportionChart'), {
+            type: 'doughnut',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: values,
+                    backgroundColor: ['#00aaff', '#28a745', '#ffc107', '#dc3545', '#6f42c1', '#20c997', '#fd7e14', '#e83e8c'],
+                    hoverOffset: 4
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } } }
+        });
 
-    // (省略 updateCoreDashboard 和 updateCoreCharts 函數，因為在偵錯模式下不會執行)
+        // 核心 Chart 2: 股債比例 (Pie Chart)
+        coreChart2 = new Chart(document.getElementById('coreAssetChart'), {
+            type: 'pie',
+            data: {
+                labels: ['股票', '債券'],
+                datasets: [{
+                    data: [stockValue, bondValue],
+                    backgroundColor: ['#28a745', '#00aaff'], 
+                    hoverOffset: 4
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } } }
+        });
+        
+        // 核心 Chart 3: 損益分佈 (Bar Chart) - 橫跨兩欄
+        const sortedByPL = [...data].sort((a, b) => b.pl - a.pl);
+        const plChartData = [...new Set([...sortedByPL.slice(0, 5), ...sortedByPL.slice(-5)])].filter(item => item.pl !== 0).sort((a, b) => b.pl - a.pl); 
+        
+        coreChart3 = new Chart(document.getElementById('corePLChart'), {
+            type: 'bar',
+            data: {
+                labels: plChartData.map(i => i.name),
+                datasets: [{
+                    label: '損益金額',
+                    data: plChartData.map(i => i.pl),
+                    backgroundColor: plChartData.map(i => i.pl >= 0 ? '#28a745' : '#dc3545'),
+                    borderRadius: 4
+                }]
+            },
+            options: { 
+                responsive: true, 
+                maintainAspectRatio: false, 
+                plugins: { legend: { display: false } }, 
+                scales: { 
+                    y: { beginAtZero: false },
+                    x: {
+                        ticks: {
+                            autoSkip: false,
+                            maxRotation: 45,
+                            minRotation: 45
+                        }
+                    } 
+                } 
+            }
+        });
+
+    }
 
 
     // =========================================================
