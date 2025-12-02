@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>個人投資組合儀表板 (V20 - 最終數據穩定版)</title>
+    <title>個人投資組合儀表板 (V21 - 網路容錯與最終校準)</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
         /* 基礎佈局與字體 (保持不變) */
@@ -227,9 +227,12 @@
             // 使用 proxyUrl 繞過 CORS 限制
             const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(googleSheetUrl)}&timestamp=${new Date().getTime()}`;
             
+            // *** 檢查點 1: 網路連線/代理服務是否成功 ***
             const response = await fetch(proxyUrl);
             
-            if (!response.ok) throw new Error('網路回應錯誤 (可能為 CORS 或代理服務問題)。');
+            if (!response.ok) {
+                 throw new Error('網路回應錯誤 (可能原因：CORS 代理服務失敗、網路受限或 Google Sheet 連結無效)。');
+            }
             
             const data = await response.text();
             
@@ -241,18 +244,16 @@
                 
                 const cols = parseCSVLine(row);
                 
-                // 檢查至少要有足夠的欄位來解析到損益(L欄/Index 11)，放寬至 > 10
-                if (cols.length < 11) return null; 
+                // 檢查欄位數必須夠多，才能包含到損益 (Index 12)
+                if (cols.length < 13) return null; 
 
                 const cleanNum = (str) => {
                     const cleanedStr = str.replace(/,/g, '').replace(/%/g, '');
-                    // 如果是空字串，返回 0
                     if (cleanedStr.trim() === '') return 0;
                     return parseFloat(cleanedStr) || 0;
                 };
 
-                // *** V20 修正: 欄位絕對定位，並使用 try-catch 確保數值解析不會崩潰 ***
-                // 根據 Google Sheet (A:M)，欄位 Index 為 A=0, B=1, J=9, K=10, L=11, M=12
+                // *** V21: 欄位絕對定位，解決 CSV 錯位問題 (J=9, K=10, L=11, M=12) ***
                 try {
                     return {
                         code: cols[0],             
@@ -264,14 +265,14 @@
                     };
                 } catch(e) {
                     // 如果單行解析出錯，忽略該行
-                    console.warn(`忽略無效資料行: ${row}`, e);
+                    console.warn(`忽略無效資料行 (解析失敗): ${row}`, e);
                     return null;
                 }
             }).filter(item => item !== null && item.cost !== 0); // 過濾掉成本為 0 的項目
 
-            // 檢查是否沒有數據
+            // *** 檢查點 2: 資料是否被成功解析 ***
             if (portfolioData.length === 0) {
-                 throw new Error("解析後沒有有效的投資組合數據 (所有項目成本皆為 0 或格式不符)。");
+                 throw new Error("解析後沒有有效的投資組合數據 (請檢查 Google Sheet 連結是否正確且內容不為空)。");
             }
 
 
@@ -284,8 +285,9 @@
         } catch (error) {
             console.error('讀取失敗:', error);
             document.getElementById('tableBody').innerHTML = `<tr><td colspan="6" class="negative" style="text-align:center">
-                <strong>讀取資料失敗！請確認 Google Sheet 已發布為 CSV，且欄位順序正確。</strong><br>
-                錯誤訊息: ${error.message}
+                <strong>讀取資料失敗！</strong><br>
+                錯誤訊息: ${error.message} <br>
+                <small>如果持續失敗，可能是您的網路環境無法連線到第三方代理服務。</small>
             </td></tr>`;
             document.getElementById('lastUpdated').innerText = '更新失敗';
 
@@ -380,8 +382,9 @@
                             font: {
                                 size: 12 
                             },
+                             // V21 修正：增加千分位格式化
                              callback: function(value) {
-                                return value.toLocaleString(); // 增加千分位
+                                return value.toLocaleString(); 
                             }
                         }
                     },
@@ -430,12 +433,12 @@
                 scales: {
                     y: {
                         beginAtZero: false,
-                        // 讓 Y 軸範圍稍微超出最大/最小值，視覺效果較佳
                         min: Math.min(...plChartData.map(d => d.pl)) * 1.15, 
                         max: Math.max(...plChartData.map(d => d.pl)) * 1.15,
                         ticks: {
+                             // V21 修正：增加千分位格式化
                              callback: function(value) {
-                                return value.toLocaleString(); // 增加千分位
+                                return value.toLocaleString(); 
                             }
                         }
                     },
