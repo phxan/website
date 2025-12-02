@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>個人投資組合儀表板 (V22 - 直接連線/最終嘗試)</title>
+    <title>個人投資組合儀表板 (V23 - 恢復代理連線 + 正確解析)</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
         /* 基礎佈局與字體 (保持不變) */
@@ -204,4 +204,43 @@
                 inQuotes = !inQuotes;
             } else if (text[i] === ',' && !inQuotes) {
                 let val = text.substring(startValueIndex, i);
-                if (val.startsWith
+                if (val.startsWith('"') && val.endsWith('"')) {
+                    val = val.substring(1, val.length - 1);
+                }
+                result.push(val.trim());
+                startValueIndex = i + 1;
+            }
+        }
+        let val = text.substring(startValueIndex);
+        if (val.startsWith('"') && val.endsWith('"')) {
+            val = val.substring(1, val.length - 1);
+        }
+        result.push(val.trim());
+        return result;
+    }
+
+    async function fetchData() {
+        document.getElementById('tableBody').innerHTML = '<tr><td colspan="6" class="loading">正在更新資料...</td></tr>';
+        document.getElementById('lastUpdated').innerText = '更新中...';
+
+        try {
+            // *** V23 修正: 恢復使用代理服務，並增加時間戳記避免快取問題 ***
+            const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(googleSheetUrl)}&timestamp=${new Date().getTime()}`;
+            
+            const response = await fetch(proxyUrl);
+            
+            if (!response.ok) {
+                 throw new Error('網路回應錯誤 (可能原因：CORS 代理服務失敗或網路受限)。');
+            }
+            
+            const data = await response.text();
+            
+            // 跳過 CSV 標題行 (通常是第一行)
+            const rows = data.split(/\r\n|\n/).slice(1);
+            
+            const portfolioData = rows.map(row => {
+                if (!row.trim()) return null;
+                
+                const cols = parseCSVLine(row);
+                
+                // 檢查欄位數必須夠多，才能包含到損益 (Index 12
