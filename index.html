@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>個人投資組合儀表板 (最終修正 V11 - 外部 CSS 邊界修復)</title>
+    <title>個人投資組合儀表板 (最終修正 V12 - 徹底解決 X 軸裁切及變形)</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
         /* 基礎佈局與字體 (保持不變) */
@@ -39,17 +39,17 @@
             padding: 20px; 
             border-radius: 5px; 
             box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
-            /* *** 最終修正 1: 卡片高度增加到 340px *** */
-            height: 340px; 
+            /* *** 修正 1: 確保足夠的絕對高度 380px *** */
+            height: 380px; 
             display: flex; 
             flex-direction: column;
         }
         
         .chart-card canvas { flex-grow: 1; max-height: 100%; }
         
-        /* *** 最終修正 2: 強制 TopHoldingsChart 的 Canvas 底部留白，推開邊界 *** */
+        /* *** 修正 2: 移除 V11 的外部 CSS 調整 *** */
         #topHoldingsChart {
-            margin-bottom: 25px; /* 增加 25px 外部底部空間 */
+            margin-bottom: 0px; 
         }
         
         .table-container { background: #fff; padding: 20px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); overflow-x: auto; }
@@ -339,19 +339,26 @@
                 maintainAspectRatio: false, 
                 plugins: { 
                     legend: { display: false },
-                    // *** 最終修正 3: 移除內部 padding.bottom，改由外部 CSS 控制 ***
-                    layout: {
-                        padding: {
-                            left: 80, 
-                            right: 10,
-                            top: 5
-                            // 底部 padding 移除
-                        }
-                    },
+                },
+                layout: {
+                    padding: {
+                        // *** 修正 3: 增加左側 padding 確保名稱完整顯示 ***
+                        left: 100, 
+                        right: 10,
+                        top: 5,
+                        // *** 修正 4: 增加底部 padding 確保 X 軸數字完整顯示 ***
+                        bottom: 40 
+                    }
                 },
                 scales: {
                     x: {
-                        beginAtZero: true
+                        beginAtZero: true,
+                        // *** 修正 5: 確保 X 軸標籤字體大小為 10px ***
+                         ticks: {
+                            font: {
+                                size: 10 
+                            }
+                        }
                     },
                     y: {
                         // 標籤字體大小保持 10px
@@ -394,10 +401,14 @@
                         min: Math.min(...plChartData.map(d => d.pl)) * 1.15 
                     },
                     x: {
+                         // *** 修正 6: 確保 X 軸標籤字體大小為 10px ***
                          ticks: {
                             font: {
                                 size: 10 
-                            }
+                            },
+                            // 調整 X 軸標籤旋轉角度，防止裁切
+                            maxRotation: 45, 
+                            minRotation: 45 
                         }
                     }
                 }
