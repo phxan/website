@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>個人投資組合儀表板 (最終修正 V6 - 解決橫向圖表裁切)</title>
+    <title>個人投資組合儀表板 (最終修正 V7 - 解決橫向圖表裁切)</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
         /* 基礎佈局與字體 */
@@ -63,7 +63,6 @@
         .charts-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
         .chart-card { 
             background: #fff; 
-            /* *** 修正 1: 移除上次的 40px padding，恢復一般 20px padding *** */
             padding: 20px; 
             border-radius: 5px; 
             box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
@@ -369,10 +368,10 @@
                 maintainAspectRatio: false, 
                 plugins: { 
                     legend: { display: false },
-                    // *** 最終 Chart.js 邊距調整：加大左側內邊距到 40，徹底避免標籤被裁切 ***
+                    // *** 最終修正：加大 Chart.js 內部左側內邊距到 60，徹底避免長標籤被裁切 ***
                     layout: {
                         padding: {
-                            left: 40, 
+                            left: 60, // 增加到 60px 緩衝
                             right: 10,
                             top: 5,
                             bottom: 5
