@@ -27,11 +27,18 @@
             padding: 20px; 
             border-radius: 10px; 
             box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
-            /* 圖表修正重點：設定最小高度並使用 Flex 確保 Canvas 佈局正確 */
+            /* 修正 1: 設定最小高度並使用 Flex 容器 */
             min-height: 400px; 
             display: flex;
             flex-direction: column;
         }
+        
+        /* ***** 修正 2: 解決圖表無限延伸的關鍵 CSS ***** */
+        .chart-card canvas {
+            flex-grow: 1; /* 讓 canvas 填滿 chart-card 剩餘的垂直空間 */
+            max-height: 100%; /* 確保不會超過容器高度 */
+        }
+        /* ************************************************ */
         
         .table-container { background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; margin-top: 10px; min-width: 600px; }
@@ -147,12 +154,12 @@
         document.getElementById('lastUpdated').innerText = '更新中...';
 
         try {
-            // 使用 allorigins 作為 CORS 代理，並加上時間戳防止快取
+            // 使用 allorigins 作為 CORS 代理
             const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(googleSheetUrl)}&timestamp=${new Date().getTime()}`;
             
             const response = await fetch(proxyUrl);
             
-            if (!response.ok) throw new Error('網路回應錯誤，可能發生 CORS 阻擋。');
+            if (!response.ok) throw new Error('網路回應錯誤。');
             
             const data = await response.text();
             
@@ -163,7 +170,6 @@
                 
                 const cols = parseCSVLine(row);
                 
-                // 根據您的欄位順序，總共是 12 欄 (索引 0-11)
                 if (cols.length < 12) return null;
 
                 const cleanNum = (str) => parseFloat(str.replace(/,/g, '').replace(/%/g, '')) || 0;
@@ -171,12 +177,11 @@
                 return {
                     code: cols[0],
                     name: cols[1],
-                    // ******************** 欄位索引修正 ********************
-                    cost: cleanNum(cols[8]),    // 庫存成本 (Index 8)
-                    value: cleanNum(cols[9]),   // 庫存現值 (Index 9)
-                    pl: cleanNum(cols[10]),     // 庫存損益 (Index 10)
-                    pct: cleanNum(cols[11])     // 庫存損益% (Index 11)
-                    // ****************************************************
+                    // 欄位索引修正 (8, 9, 10, 11)
+                    cost: cleanNum(cols[8]),    
+                    value: cleanNum(cols[9]),   
+                    pl: cleanNum(cols[10]),     
+                    pct: cleanNum(cols[11])     
                 };
             }).filter(item => item !== null);
 
@@ -237,7 +242,6 @@
     }
 
     function updateCharts(data) {
-        // 銷毀舊圖表以防止重疊
         if (chartInstance1) chartInstance1.destroy();
         if (chartInstance2) chartInstance2.destroy();
 
@@ -257,7 +261,7 @@
             options: {
                 indexAxis: 'y',
                 responsive: true,
-                maintainAspectRatio: false, // 搭配 CSS 修正高度問題
+                maintainAspectRatio: false, // 確保圖表不會被強迫等比例縮放
                 plugins: { legend: { display: false } }
             }
         });
@@ -281,7 +285,7 @@
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: false, // 搭配 CSS 修正高度問題
+                maintainAspectRatio: false, // 確保圖表不會被強迫等比例縮放
                 plugins: { legend: { display: false } }
             }
         });
