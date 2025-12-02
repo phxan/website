@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>即時投資組合儀表板 (最終修正版)</title>
+    <title>即時投資組合儀表板 (最終修正版 v3)</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f6f8; margin: 0; padding: 20px; }
@@ -21,24 +21,35 @@
         .positive { color: #28a745; }
         .negative { color: #dc3545; }
 
-        .charts-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+        .charts-container { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 20px; 
+            margin-bottom: 20px; 
+        }
         .chart-card { 
             background: #fff; 
             padding: 20px; 
             border-radius: 10px; 
             box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
-            /* 修正 1: 設定最小高度並使用 Flex 容器 */
-            min-height: 400px; 
-            display: flex;
+            /* 最終修正：設定固定高度，確保圖表不會拉伸 */
+            height: 450px; 
+            display: flex; /* 讓內容垂直排列 */
             flex-direction: column;
         }
         
-        /* ***** 修正 2: 解決圖表無限延伸的關鍵 CSS ***** */
+        /* 讓 canvas 填滿 chart-card 內部的可用空間 */
         .chart-card canvas {
-            flex-grow: 1; /* 讓 canvas 填滿 chart-card 剩餘的垂直空間 */
-            max-height: 100%; /* 確保不會超過容器高度 */
+            flex-grow: 1; 
+            max-height: 100%; 
         }
-        /* ************************************************ */
+        
+        @media (max-width: 768px) {
+            .charts-container { grid-template-columns: 1fr; }
+            .chart-card { height: 400px; } /* 行動版適當縮小高度 */
+            .header { flex-direction: column; align-items: flex-start; }
+            .refresh-btn { margin-top: 10px; }
+        }
         
         .table-container { background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; margin-top: 10px; min-width: 600px; }
@@ -47,12 +58,6 @@
         th:hover { background-color: #e9ecef; }
         tr:hover { background-color: #f1f1f1; }
         .loading { text-align: center; padding: 20px; color: #666; font-style: italic; }
-
-        @media (max-width: 768px) {
-            .charts-container { grid-template-columns: 1fr; }
-            .header { flex-direction: column; align-items: flex-start; }
-            .refresh-btn { margin-top: 10px; }
-        }
     </style>
 </head>
 <body>
@@ -261,7 +266,7 @@
             options: {
                 indexAxis: 'y',
                 responsive: true,
-                maintainAspectRatio: false, // 確保圖表不會被強迫等比例縮放
+                maintainAspectRatio: false, 
                 plugins: { legend: { display: false } }
             }
         });
@@ -285,7 +290,7 @@
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: false, // 確保圖表不會被強迫等比例縮放
+                maintainAspectRatio: false, 
                 plugins: { legend: { display: false } }
             }
         });
