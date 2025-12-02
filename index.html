@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>個人投資組合儀表板 (最終修正 V13 - 美觀佈局與字體)</title>
+    <title>個人投資組合儀表板 (最終修正 V14 - 空間優化)</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
         /* 基礎佈局與字體 (保持不變) */
@@ -337,8 +337,8 @@
                 },
                 layout: {
                     padding: {
-                        // *** 修正 1: 降低左側 padding 到 80 (修正左邊留白過多) ***
-                        left: 80, 
+                        // *** 修正 1: 降低左側 padding 到 65 (讓圖表更滿版) ***
+                        left: 65, 
                         right: 10,
                         top: 5,
                         // 保持底部 padding 40
@@ -350,7 +350,7 @@
                         beginAtZero: true,
                          ticks: {
                             font: {
-                                // *** 修正 2: 恢復 X 軸字體到 12px ***
+                                // 保持 X 軸字體 12px
                                 size: 12 
                             }
                         }
@@ -358,7 +358,7 @@
                     y: {
                         ticks: {
                             font: {
-                                // *** 修正 3: 恢復 Y 軸字體到 12px ***
+                                // 保持 Y 軸字體 12px
                                 size: 12 
                             }
                         }
@@ -392,7 +392,7 @@
                 plugins: { legend: { display: false } },
                 layout: {
                     padding: {
-                        // *** 修正 4: 增加底部 padding 到 60 (解決 X 軸標籤裁切) ***
+                        // 保持底部 padding 60 (確保 X 軸標籤不裁切)
                         bottom: 60 
                     }
                 },
@@ -404,10 +404,10 @@
                     x: {
                          ticks: {
                             font: {
-                                // *** 修正 5: 恢復 X 軸字體到 12px ***
+                                // 保持 X 軸字體 12px
                                 size: 12 
                             },
-                            // 保持 X 軸標籤旋轉角度，防止裁切
+                            // 保持 X 軸標籤旋轉角度
                             maxRotation: 45, 
                             minRotation: 45 
                         }
