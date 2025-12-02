@@ -3,46 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>個人投資組合儀表板 (最終修正 V7 - 解決橫向圖表裁切)</title>
+    <title>個人投資組合儀表板 (最終修正 V8 - 解決邊界裁切問題)</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
-        /* 基礎佈局與字體 */
+        /* 基礎佈局與字體 (保持不變) */
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f6f8; margin: 0; padding: 0; display: flex; min-height: 100vh; }
-        
-        /* 側邊欄樣式 (Sidebar) */
-        .sidebar {
-            width: 250px;
-            background-color: #2c3b41;
-            color: #fff;
-            padding-top: 20px;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-            flex-shrink: 0; 
-        }
+        .sidebar { width: 250px; background-color: #2c3b41; color: #fff; padding-top: 20px; box-shadow: 2px 0 5px rgba(0,0,0,0.1); flex-shrink: 0; }
         .sidebar h2 { margin: 0 0 30px 20px; font-size: 1.2rem; color: #f8f9fa; }
-        .sidebar nav a {
-            display: block;
-            padding: 12px 20px;
-            text-decoration: none;
-            color: #c0c0c0;
-            transition: background-color 0.3s, color 0.3s;
-            border-left: 3px solid transparent;
-        }
-        .sidebar nav a:hover {
-            background-color: #3d4a52;
-            color: #fff;
-        }
-        .sidebar nav a.active {
-            background-color: #1e282c;
-            color: #fff;
-            border-left: 3px solid #00aaff; 
-        }
+        .sidebar nav a { display: block; padding: 12px 20px; text-decoration: none; color: #c0c0c0; transition: background-color 0.3s, color 0.3s; border-left: 3px solid transparent; }
+        .sidebar nav a:hover { background-color: #3d4a52; color: #fff; }
+        .sidebar nav a.active { background-color: #1e282c; color: #fff; border-left: 3px solid #00aaff; }
 
         /* 主內容區域 */
-        .main-content {
-            flex-grow: 1;
-            padding: 20px;
-            overflow-y: auto;
-        }
+        .main-content { flex-grow: 1; padding: 20px; overflow-y: auto; }
         .container { max-width: 100%; margin: 0; }
         
         /* 標題卡片 */
@@ -52,7 +25,7 @@
         .refresh-btn { background-color: #00aaff; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; transition: background 0.3s; }
         .refresh-btn:hover { background-color: #0090e0; }
         
-        /* KPI, Chart, Table 樣式 (沿用及修正) */
+        /* KPI, Chart, Table 樣式 (保持不變) */
         .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
         .kpi-card { background: #fff; padding: 20px; border-radius: 5px; border-top: 3px solid #00aaff; box-shadow: 0 2px 5px rgba(0,0,0,0.05); text-align: center; }
         .kpi-title { font-size: 0.9em; color: #888; margin-bottom: 5px; }
@@ -202,28 +175,23 @@
     let chartInstance1 = null;
     let chartInstance2 = null;
 
-    // --- 側邊欄切換邏輯 ---
+    // --- 側邊欄切換邏輯 (保持不變) ---
     document.querySelectorAll('.tab-link').forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
             const targetTab = this.getAttribute('data-tab');
 
-            // 移除所有連結的 active 樣式
             document.querySelectorAll('.tab-link').forEach(l => l.classList.remove('active'));
-            // 隱藏所有分頁內容
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
 
-            // 啟用點擊的連結和對應的分頁內容
             this.classList.add('active');
             document.getElementById(targetTab).classList.add('active');
 
-            // 如果切換回儀表板，需要重新渲染圖表以確保它們在顯示時正確繪製
             if (targetTab === 'dashboard' && window.lastPortfolioData) {
                 setTimeout(() => updateCharts(window.lastPortfolioData), 50); 
             }
         });
     });
-    // -----------------------
 
     // CSV 解析器 (保持不變)
     function parseCSVLine(text) {
@@ -256,7 +224,6 @@
         document.getElementById('lastUpdated').innerText = '更新中...';
 
         try {
-            // 使用 allorigins 作為 CORS 代理
             const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(googleSheetUrl)}&timestamp=${new Date().getTime()}`;
             
             const response = await fetch(proxyUrl);
@@ -279,7 +246,6 @@
                 return {
                     code: cols[0],
                     name: cols[1],
-                    // 欄位索引修正 (8, 9, 10, 11)
                     cost: cleanNum(cols[8]),    
                     value: cleanNum(cols[9]),   
                     pl: cleanNum(cols[10]),     
@@ -287,7 +253,6 @@
                 };
             }).filter(item => item !== null);
 
-            // 儲存資料供圖表重繪使用
             window.lastPortfolioData = portfolioData; 
             updateDashboard(portfolioData);
             
@@ -305,13 +270,13 @@
     }
 
     function updateDashboard(data) {
-        // 1. 計算總計
+        // 1. 計算總計 (保持不變)
         const totalCost = data.reduce((acc, curr) => acc + curr.cost, 0);
         const totalValue = data.reduce((acc, curr) => acc + curr.value, 0);
         const totalPL = totalValue - totalCost;
         const totalPct = totalCost > 0 ? (totalPL / totalCost) * 100 : 0;
 
-        // 2. 更新 KPI 卡片
+        // 2. 更新 KPI 卡片 (保持不變)
         document.getElementById('kpi-cost').innerText = parseInt(totalCost).toLocaleString();
         document.getElementById('kpi-value').innerText = parseInt(totalValue).toLocaleString();
         
@@ -326,7 +291,7 @@
         // 3. 更新圖表
         updateCharts(data);
 
-        // 4. 更新表格
+        // 4. 更新表格 (保持不變)
         const tableBody = document.getElementById('tableBody');
         tableBody.innerHTML = '';
         
@@ -368,13 +333,19 @@
                 maintainAspectRatio: false, 
                 plugins: { 
                     legend: { display: false },
-                    // *** 最終修正：加大 Chart.js 內部左側內邊距到 60，徹底避免長標籤被裁切 ***
+                    // *** 最終修正：加大 Chart.js 內部左側內邊距到 80，以超額緩衝處理最長標籤裁切問題 ***
                     layout: {
                         padding: {
-                            left: 60, // 增加到 60px 緩衝
+                            left: 80, // 增加到 80px 緩衝
                             right: 10,
                             top: 5,
                             bottom: 5
+                        }
+                    },
+                    // 確保 X 軸的刻度線完整顯示
+                    scales: {
+                        x: {
+                            beginAtZero: true
                         }
                     }
                 }
@@ -385,7 +356,6 @@
         const sortedByPL = [...data].sort((a, b) => b.pl - a.pl);
         const topGainers = sortedByPL.slice(0, 5);
         const topLosers = sortedByPL.slice(-5);
-        // 過濾掉 P/L 為 0 的項目，並確保總數不超過 10 個
         const plChartData = [...new Set([...topGainers, ...topLosers])]
                              .filter(item => item.pl !== 0)
                              .sort((a, b) => b.pl - a.pl);
@@ -404,12 +374,21 @@
             options: {
                 responsive: true,
                 maintainAspectRatio: false, 
-                plugins: { legend: { display: false } }
+                plugins: { legend: { display: false } },
+                // *** 修正：確保 Y 軸下方留白，避免負值柱狀圖被裁切 ***
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        // 增加 y 軸下邊距，確保負值標籤和柱狀圖完整
+                        min: Math.min(...plChartData.map(d => d.pl)) * 1.15 // 擴展到最小值下方 15%
+                    }
+                }
             }
         });
     }
 
     function sortTable(n) {
+        // ... (排序函數保持不變)
         var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
         table = document.getElementById("holdingsTable");
         switching = true;
