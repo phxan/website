@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>個人投資組合儀表板 (最終修正 V9 - 解決橫向圖表底部裁切)</title>
+    <title>個人投資組合儀表板 (最終修正 V10 - 徹底解決圖表邊界裁切)</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
         /* 基礎佈局與字體 (保持不變) */
@@ -39,8 +39,8 @@
             padding: 20px; 
             border-radius: 5px; 
             box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
-            /* *** 修正 1: 增加卡片高度到 300px，為底部標籤留出空間 *** */
-            height: 300px; 
+            /* *** 最終修正 1: 再次增加卡片高度到 320px *** */
+            height: 320px; 
             display: flex; 
             flex-direction: column;
         }
@@ -334,19 +334,25 @@
                 maintainAspectRatio: false, 
                 plugins: { 
                     legend: { display: false },
-                    // *** 修正 2: 內部左側邊距最大化 (80px) ***
                     layout: {
                         padding: {
-                            left: 80, 
+                            left: 80, // 確保左側有足夠空間
                             right: 10,
                             top: 5,
-                            /* *** 修正 3: 增加底部邊距到 20px，避免最底下的標籤被裁切 *** */
-                            bottom: 20 
+                            bottom: 20 // 確保底部有足夠空間
                         }
                     },
-                    scales: {
-                        x: {
-                            beginAtZero: true
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true
+                    },
+                    y: {
+                        // *** 最終修正 2: 縮小 Y 軸標籤字體大小至 10px，減少垂直佔用空間 ***
+                        ticks: {
+                            font: {
+                                size: 10 
+                            }
                         }
                     }
                 }
@@ -376,11 +382,18 @@
                 responsive: true,
                 maintainAspectRatio: false, 
                 plugins: { legend: { display: false } },
-                // 確保 Y 軸下方留白，避免負值柱狀圖被裁切 (保持不變)
                 scales: {
                     y: {
                         beginAtZero: false,
                         min: Math.min(...plChartData.map(d => d.pl)) * 1.15 
+                    },
+                    // *** 修正 3: 縮小 X 軸標籤字體大小至 10px，確保不被裁切 ***
+                    x: {
+                         ticks: {
+                            font: {
+                                size: 10 
+                            }
+                        }
                     }
                 }
             }
