@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>即時投資組合儀表板 (最終修正版 v3)</title>
+    <title>即時投資組合儀表板 (最終修正版 v4 - 調整高度)</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f6f8; margin: 0; padding: 20px; }
@@ -32,9 +32,10 @@
             padding: 20px; 
             border-radius: 10px; 
             box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
-            /* 最終修正：設定固定高度，確保圖表不會拉伸 */
-            height: 450px; 
-            display: flex; /* 讓內容垂直排列 */
+            /* *** 最終修正：調整高度為 250px 並新增 overflow: hidden *** */
+            height: 250px; 
+            overflow: hidden; 
+            display: flex; 
             flex-direction: column;
         }
         
@@ -46,7 +47,7 @@
         
         @media (max-width: 768px) {
             .charts-container { grid-template-columns: 1fr; }
-            .chart-card { height: 400px; } /* 行動版適當縮小高度 */
+            .chart-card { height: 350px; } /* 行動版適當調整高度 */
             .header { flex-direction: column; align-items: flex-start; }
             .refresh-btn { margin-top: 10px; }
         }
