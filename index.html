@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>個人投資組合儀表板 (V31 - 核心存股修復版)</title>
+    <title>個人投資組合儀表板 (V32 - 最終優化)</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
         /* 基礎佈局與字體 (V17 樣式) */
@@ -44,7 +44,8 @@
             flex-direction: column;
         }
         
-        .chart-card canvas { flex-grow: 1; max-height: 100%; }
+        /* V32 修正：確保 canvas 在容器內正常縮放 */
+        .chart-card canvas { flex-grow: 1; max-height: 100%; width: 100% !important; height: 100% !important; }
         
         .table-container { background: #fff; padding: 20px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; margin-top: 10px; min-width: 600px; }
@@ -131,12 +132,12 @@
                 <table id="holdingsTable">
                     <thead>
                         <tr>
-                            <th onclick="sortTable(0)">代碼</th>
-                            <th onclick="sortTable(1)">名稱</th>
-                            <th onclick="sortTable(2)">庫存成本</th>
-                            <th onclick="sortTable(3)">庫存現值</th>
-                            <th onclick="sortTable(4)">庫存損益</th>
-                            <th onclick="sortTable(5)">報酬率 %</th>
+                            <th onclick="sortTable('holdingsTable', 0)">代碼</th>
+                            <th onclick="sortTable('holdingsTable', 1)">名稱</th>
+                            <th onclick="sortTable('holdingsTable', 2)">庫存成本</th>
+                            <th onclick="sortTable('holdingsTable', 3)">庫存現值</th>
+                            <th onclick="sortTable('holdingsTable', 4)">庫存損益</th>
+                            <th onclick="sortTable('holdingsTable', 5)">報酬率 %</th>
                         </tr>
                     </thead>
                     <tbody id="tableBody">
@@ -173,7 +174,7 @@
                     <div class="kpi-value" id="core-kpi-annual-div">-</div>
                 </div>
                 <div class="kpi-card">
-                    <div class="kpi-title">總殖利率 (市值計算)</div>
+                    <div class="kpi-title">總殖利率 (成本計算)</div>
                     <div class="kpi-value" id="core-kpi-yield">-</div>
                 </div>
                 <div class="kpi-card">
@@ -198,18 +199,18 @@
             </div>
 
             <div class="table-container">
-                <h3>核心持股明細</h3>
+                <h3>核心持股明細 (點擊標題可排序)</h3>
                 <table id="coreHoldingsTable">
                     <thead>
                         <tr>
-                            <th>代碼</th>
-                            <th>名稱</th>
-                            <th>股債類型</th>
-                            <th>月配息</th>
-                            <th>年配息</th>
-                            <th>庫存現值</th>
-                            <th>庫存損益</th>
-                            <th>報酬率 %</th>
+                            <th onclick="sortTable('coreHoldingsTable', 0)">代碼</th>
+                            <th onclick="sortTable('coreHoldingsTable', 1)">名稱</th>
+                            <th onclick="sortTable('coreHoldingsTable', 2)">股債類型</th>
+                            <th onclick="sortTable('coreHoldingsTable', 3)">月配息</th>
+                            <th onclick="sortTable('coreHoldingsTable', 4)">年配息</th>
+                            <th onclick="sortTable('coreHoldingsTable', 5)">庫存現值</th>
+                            <th onclick="sortTable('coreHoldingsTable', 6)">庫存損益</th>
+                            <th onclick="sortTable('coreHoldingsTable', 7)">報酬率 %</th>
                         </tr>
                     </thead>
                     <tbody id="coreTableBody">
@@ -250,7 +251,7 @@
     let coreChart3 = null;
 
 
-    // --- 側邊欄切換邏輯 (V28 修正: 點擊核心存股時觸發新函數) ---
+    // --- 側邊欄切換邏輯 ---
     document.querySelectorAll('.tab-link').forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
@@ -262,12 +263,12 @@
             this.classList.add('active');
             document.getElementById(targetTab).classList.add('active');
 
+            // 確保圖表在切換後重新渲染 (解決圖表掉出框架的問題)
             if (targetTab === 'dashboard' && window.lastDashboardData) {
                 setTimeout(() => updateDashboardCharts(window.lastDashboardData), 50); 
             } else if (targetTab === 'core') {
-                // 點擊核心存股時，載入數據 (如果還沒有載入的話)
                 if (!window.lastCoreData) fetchCoreData();
-                else updateCoreCharts(window.lastCoreData, window.stockValue, window.bondValue);
+                else setTimeout(() => updateCoreCharts(window.lastCoreData, window.stockValue, window.bondValue), 50);
             }
         });
     });
@@ -428,7 +429,7 @@
     }
 
     // =========================================================
-    // 核心存股資料處理 (V31 核心修復)
+    // 核心存股資料處理 (V32 優化)
     // =========================================================
 
     async function fetchCoreData() {
@@ -450,7 +451,7 @@
                 // 檢查欄位數 (只有 10 欄)
                 if (cols.length < 10) return null; 
 
-                // *** V31 核心存股數據解析 (使用精確的 0-9 Index，並計算報酬率) ***
+                // *** V31/V32 核心存股數據解析 (使用精確的 0-9 Index，並計算報酬率) ***
                 try {
                     const cost = cleanNum(cols[3]);
                     const value = cleanNum(cols[4]);
@@ -459,7 +460,7 @@
                     const monthlyDiv = cleanNum(cols[6]); 
                     const annualDiv = monthlyDiv * 12; 
                     
-                    // 根據成本和市值/損益計算報酬率 % (修正 V29 錯誤)
+                    // 根據成本和市值/損益計算報酬率 % 
                     const pct = cost > 0 ? ((value - cost) / cost) * 100 : 0; 
 
                     return {
@@ -498,13 +499,12 @@
         // 1. 計算總計
         const totalCost = data.reduce((acc, curr) => acc + curr.cost, 0);
         const totalValue = data.reduce((acc, curr) => acc + curr.value, 0);
-        // 使用計算值，確保準確性 (雖然理論上應該等於單筆損益加總)
         const calculatedTotalPL = totalValue - totalCost; 
         const totalMonthlyDiv = data.reduce((acc, curr) => acc + curr.monthlyDiv, 0);
         const totalAnnualDiv = data.reduce((acc, curr) => acc + curr.annualDiv, 0);
         
-        // 總殖利率 (年配息 / 總市值)
-        const totalYield = totalValue > 0 ? (totalAnnualDiv / totalValue) * 100 : 0;
+        // V32 修正：總殖利率 (年配息 / 總投入成本)
+        const totalYield = totalCost > 0 ? (totalAnnualDiv / totalCost) * 100 : 0;
 
         // 股債比例計算 (類型包含 '股' 或 '債')
         const stockValue = data.filter(item => item.type && item.type.toLowerCase().includes('股')).reduce((acc, curr) => acc + curr.value, 0);
@@ -557,7 +557,26 @@
         if (coreChart2) coreChart2.destroy();
         if (coreChart3) coreChart3.destroy();
         
-        // 核心 Chart 1: 市值比例 (Pie/Doughnut Chart)
+        // 自訂 Tooltip 函式，用於顯示數值和百分比 (V32 新增)
+        const customTooltip = {
+            callbacks: {
+                label: function(context) {
+                    let label = context.label || '';
+                    if (label) {
+                        label += ': ';
+                    }
+                    if (context.parsed !== null) {
+                        const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                        const percentage = ((context.parsed / total) * 100).toFixed(2);
+                        label += `${context.parsed.toLocaleString()} (${percentage}%)`;
+                    }
+                    return label;
+                }
+            }
+        };
+
+
+        // 核心 Chart 1: 市值比例 (Doughnut Chart)
         const topHoldings = [...data].sort((a, b) => b.value - a.value).slice(0, 8); 
         const labels = topHoldings.map(i => i.name);
         const values = topHoldings.map(i => i.value);
@@ -572,7 +591,14 @@
                     hoverOffset: 4
                 }]
             },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } } }
+            options: { 
+                responsive: true, 
+                maintainAspectRatio: false, 
+                plugins: { 
+                    legend: { position: 'right' },
+                    tooltip: customTooltip // V32 應用自訂 Tooltip
+                } 
+            }
         });
 
         // 核心 Chart 2: 股債比例 (Pie Chart)
@@ -586,7 +612,14 @@
                     hoverOffset: 4
                 }]
             },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } } }
+            options: { 
+                responsive: true, 
+                maintainAspectRatio: false, 
+                plugins: { 
+                    legend: { position: 'right' },
+                    tooltip: customTooltip // V32 應用自訂 Tooltip
+                } 
+            }
         });
         
         // 核心 Chart 3: 損益分佈 (Bar Chart) - 橫跨兩欄
@@ -625,13 +658,12 @@
 
 
     // =========================================================
-    // 共同函數
+    // 共同函數 (V32 修正：接受 tableId 參數，適用於儀表板與核心存股表)
     // =========================================================
 
-    function sortTable(n) {
-        // ... (排序函數保持不變)
+    function sortTable(tableId, n) {
         var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-        table = document.getElementById("holdingsTable");
+        table = document.getElementById(tableId);
         switching = true;
         dir = "asc";
         while (switching) {
