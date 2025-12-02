@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>個人投資組合儀表板 (最終修正 V17 - 視覺極限平衡)</title>
+    <title>個人投資組合儀表板 (V25 - 穩定核心 + 數據修復)</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
-        /* 基礎佈局與字體 (保持不變) */
+        /* 基礎佈局與字體 (保持 V17 穩定版本樣式) */
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f6f8; margin: 0; padding: 0; display: flex; min-height: 100vh; }
         .sidebar { width: 250px; background-color: #2c3b41; color: #fff; padding-top: 20px; box-shadow: 2px 0 5px rgba(0,0,0,0.1); flex-shrink: 0; }
         .sidebar h2 { margin: 0 0 30px 20px; font-size: 1.2rem; color: #f8f9fa; }
@@ -39,7 +39,6 @@
             padding: 20px; 
             border-radius: 5px; 
             box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
-            /* 保持足夠的高度 */
             height: 380px; 
             display: flex; 
             flex-direction: column;
@@ -176,7 +175,7 @@
     let chartInstance1 = null;
     let chartInstance2 = null;
 
-    // --- 側邊欄切換邏輯 (保持不變) ---
+    // --- 側邊欄切換邏輯 (V17 穩定版本) ---
     document.querySelectorAll('.tab-link').forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
@@ -189,6 +188,7 @@
             document.getElementById(targetTab).classList.add('active');
 
             if (targetTab === 'dashboard' && window.lastPortfolioData) {
+                // 如果切換回儀表板，重新繪製圖表
                 setTimeout(() => updateCharts(window.lastPortfolioData), 50); 
             }
         });
@@ -225,11 +225,14 @@
         document.getElementById('lastUpdated').innerText = '更新中...';
 
         try {
+            // V25 連線方式：使用 V17 成功的代理服務連線
             const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(googleSheetUrl)}&timestamp=${new Date().getTime()}`;
             
             const response = await fetch(proxyUrl);
             
-            if (!response.ok) throw new Error('網路回應錯誤。');
+            if (!response.ok) {
+                 throw new Error('網路回應錯誤 (代理服務失敗或網路受限)。');
+            }
             
             const data = await response.text();
             
@@ -240,19 +243,35 @@
                 
                 const cols = parseCSVLine(row);
                 
-                if (cols.length < 12) return null;
+                // 檢查欄位數必須夠多，才能包含到損益 (Index 12)
+                if (cols.length < 13) return null; 
 
-                const cleanNum = (str) => parseFloat(str.replace(/,/g, '').replace(/%/g, '')) || 0;
-
-                return {
-                    code: cols[0],
-                    name: cols[1],
-                    cost: cleanNum(cols[8]),    
-                    value: cleanNum(cols[9]),   
-                    pl: cleanNum(cols[10]),     
-                    pct: cleanNum(cols[11])     
+                const cleanNum = (str) => {
+                    const cleanedStr = str.replace(/,/g, '').replace(/%/g, '');
+                    if (cleanedStr.trim() === '') return 0;
+                    return parseFloat(cleanedStr) || 0;
                 };
-            }).filter(item => item !== null);
+
+                // *** V25 數據解析：使用正確的絕對定位 (J=9, K=10, L=11, M=12) ***
+                try {
+                    return {
+                        code: cols[0],             
+                        name: cols[1],             
+                        cost: cleanNum(cols[9]),   
+                        value: cleanNum(cols[10]), 
+                        pl: cleanNum(cols[11]),    
+                        pct: cleanNum(cols[12])    
+                    };
+                } catch(e) {
+                    console.warn(`忽略無效資料行 (解析失敗): ${row}`, e);
+                    return null;
+                }
+            }).filter(item => item !== null && item.cost !== 0); 
+
+            if (portfolioData.length === 0) {
+                 throw new Error("解析後沒有有效的投資組合數據 (所有項目成本皆為 0 或格式不符)。");
+            }
+
 
             window.lastPortfolioData = portfolioData; 
             updateDashboard(portfolioData);
@@ -262,206 +281,35 @@
 
         } catch (error) {
             console.error('讀取失敗:', error);
+            
+            let userMessage = error.message;
+
             document.getElementById('tableBody').innerHTML = `<tr><td colspan="6" class="negative" style="text-align:center">
-                <strong>讀取資料失敗！請確認網路連線或試算表已發布為 CSV。</strong><br>
-                錯誤訊息: ${error.message}
+                <strong>讀取資料失敗！</strong><br>
+                錯誤訊息: ${userMessage} <br>
+                <small>如果問題持續，可能是代理服務再次失效，或請嘗試硬性重新整理 (Ctrl/Cmd + Shift + R)。</small>
             </td></tr>`;
             document.getElementById('lastUpdated').innerText = '更新失敗';
+
+            // 重置 KPI
+            document.getElementById('kpi-cost').innerText = '0';
+            document.getElementById('kpi-value').innerText = '0';
+            document.getElementById('kpi-pl').innerText = '0';
+            document.getElementById('kpi-pct').innerText = '0.00%';
+            document.getElementById('kpi-pl').className = 'kpi-value';
+            document.getElementById('kpi-pct').className = 'kpi-value';
         }
     }
 
     function updateDashboard(data) {
-        // 1. 計算總計 (保持不變)
+        // 1. 計算總計
         const totalCost = data.reduce((acc, curr) => acc + curr.cost, 0);
         const totalValue = data.reduce((acc, curr) => acc + curr.value, 0);
-        const totalPL = totalValue - totalCost;
+        const totalPL = totalValue - totalCost; 
         const totalPct = totalCost > 0 ? (totalPL / totalCost) * 100 : 0;
 
-        // 2. 更新 KPI 卡片 (保持不變)
+        // 2. 更新 KPI 卡片 (保留千分位格式化)
         document.getElementById('kpi-cost').innerText = parseInt(totalCost).toLocaleString();
         document.getElementById('kpi-value').innerText = parseInt(totalValue).toLocaleString();
         
-        const plEl = document.getElementById('kpi-pl');
-        plEl.innerText = (totalPL > 0 ? '+' : '') + parseInt(totalPL).toLocaleString();
-        plEl.className = `kpi-value ${totalPL >= 0 ? 'positive' : 'negative'}`;
-        
-        const pctEl = document.getElementById('kpi-pct');
-        pctEl.innerText = (totalPct > 0 ? '+' : '') + totalPct.toFixed(2) + '%';
-        pctEl.className = `kpi-value ${totalPct >= 0 ? 'positive' : 'negative'}`;
-
-        // 3. 更新圖表
-        updateCharts(data);
-
-        // 4. 更新表格 (保持不變)
-        const tableBody = document.getElementById('tableBody');
-        tableBody.innerHTML = '';
-        
-        data.forEach(item => {
-            const row = document.createElement('tr');
-            const plClass = item.pl >= 0 ? 'positive' : 'negative';
-            row.innerHTML = `
-                <td>${item.code}</td>
-                <td>${item.name}</td>
-                <td>${Math.round(item.cost).toLocaleString()}</td>
-                <td>${Math.round(item.value).toLocaleString()}</td>
-                <td class="${plClass}">${Math.round(item.pl).toLocaleString()}</td>
-                <td class="${plClass}">${item.pct.toFixed(2)}%</td>
-            `;
-            tableBody.appendChild(row);
-        });
-    }
-
-    function updateCharts(data) {
-        if (chartInstance1) chartInstance1.destroy();
-        if (chartInstance2) chartInstance2.destroy();
-
-        // 圖表 1: 前 10 大持倉 (橫向柱狀圖)
-        const sortedByValue = [...data].sort((a, b) => b.value - a.value).slice(0, 10);
-        chartInstance1 = new Chart(document.getElementById('topHoldingsChart'), {
-            type: 'bar',
-            data: {
-                labels: sortedByValue.map(i => i.name),
-                datasets: [{
-                    label: '庫存現值',
-                    data: sortedByValue.map(i => i.value),
-                    backgroundColor: '#00aaff', 
-                    borderRadius: 4
-                }]
-            },
-            options: {
-                indexAxis: 'y',
-                responsive: true,
-                maintainAspectRatio: false, 
-                plugins: { 
-                    legend: { display: false },
-                },
-                layout: {
-                    padding: {
-                        // *** V17 最終修正: 降低左側 padding 到 45 (極限優化，以對齊「前」字) ***
-                        left: 45, 
-                        right: 10,
-                        top: 5,
-                        // 保持底部 padding 40
-                        bottom: 40 
-                    }
-                },
-                scales: {
-                    x: {
-                        beginAtZero: true,
-                         ticks: {
-                            font: {
-                                // 保持 X 軸字體 12px
-                                size: 12 
-                            }
-                        }
-                    },
-                    y: {
-                        ticks: {
-                            font: {
-                                // 保持 Y 軸字體 12px
-                                size: 12 
-                            }
-                        }
-                    }
-                }
-            }
-        });
-
-        // 圖表 2: 損益來源 (垂直柱狀圖)
-        const sortedByPL = [...data].sort((a, b) => b.pl - a.pl);
-        const topGainers = sortedByPL.slice(0, 5);
-        const topLosers = sortedByPL.slice(-5);
-        const plChartData = [...new Set([...topGainers, ...topLosers])]
-                             .filter(item => item.pl !== 0)
-                             .sort((a, b) => b.pl - a.pl);
-        
-        chartInstance2 = new Chart(document.getElementById('plChart'), {
-            type: 'bar',
-            data: {
-                labels: plChartData.map(i => i.name),
-                datasets: [{
-                    label: '損益金額',
-                    data: plChartData.map(i => i.pl),
-                    backgroundColor: plChartData.map(i => i.pl >= 0 ? '#28a745' : '#dc3545'),
-                    borderRadius: 4
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false, 
-                plugins: { legend: { display: false } },
-                layout: {
-                    padding: {
-                        // 保持底部 padding 60 (確保 X 軸標籤不裁切)
-                        bottom: 60 
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: false,
-                        min: Math.min(...plChartData.map(d => d.pl)) * 1.15 
-                    },
-                    x: {
-                         ticks: {
-                            font: {
-                                // 保持 X 軸字體 12px
-                                size: 12 
-                            },
-                            // 保持 X 軸標籤旋轉角度
-                            maxRotation: 45, 
-                            minRotation: 45 
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    function sortTable(n) {
-        // ... (排序函數保持不變)
-        var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-        table = document.getElementById("holdingsTable");
-        switching = true;
-        dir = "asc";
-        while (switching) {
-            switching = false;
-            rows = table.rows;
-            for (i = 1; i < (rows.length - 1); i++) {
-                shouldSwitch = false;
-                x = rows[i].getElementsByTagName("TD")[n];
-                y = rows[i + 1].getElementsByTagName("TD")[n];
-                
-                let xVal = x.innerHTML.replace(/,/g, '').replace(/%/g, '');
-                let yVal = y.innerHTML.replace(/,/g, '').replace(/%/g, '');
-                let isNum = !isNaN(parseFloat(xVal));
-
-                if (dir == "asc") {
-                    if (isNum ? (parseFloat(xVal) > parseFloat(yVal)) : (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase())) {
-                        shouldSwitch = true;
-                        break;
-                    }
-                } else if (dir == "desc") {
-                    if (isNum ? (parseFloat(xVal) < parseFloat(yVal)) : (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase())) {
-                        shouldSwitch = true;
-                        break;
-                    }
-                }
-            }
-            if (shouldSwitch) {
-                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-                switching = true;
-                switchcount ++;
-            } else {
-                if (switchcount == 0 && dir == "asc") {
-                    dir = "desc";
-                    switching = true;
-                }
-            }
-        }
-    }
-
-    fetchData();
-</script>
-
-</body>
-</html>
+        const plEl = document.getElementById
