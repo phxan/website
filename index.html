@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>個人投資組合儀表板 (V23 - 恢復代理連線 + 正確解析)</title>
+    <title>個人投資組合儀表板 (V24 - 穩定圖表環境 + 正確解析)</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
         /* 基礎佈局與字體 (保持不變) */
@@ -175,7 +175,7 @@
     let chartInstance1 = null;
     let chartInstance2 = null;
 
-    // --- 側邊欄切換邏輯 (保持不變) ---
+    // --- 側邊欄切換邏輯 (V17版本，確保穩定性) ---
     document.querySelectorAll('.tab-link').forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
@@ -188,6 +188,7 @@
             document.getElementById(targetTab).classList.add('active');
 
             if (targetTab === 'dashboard' && window.lastPortfolioData) {
+                // 如果切換回儀表板，重新繪製圖表
                 setTimeout(() => updateCharts(window.lastPortfolioData), 50); 
             }
         });
@@ -224,18 +225,17 @@
         document.getElementById('lastUpdated').innerText = '更新中...';
 
         try {
-            // *** V23 修正: 恢復使用代理服務，並增加時間戳記避免快取問題 ***
+            // V24 連線方式：恢復使用代理服務 (V23連線方法)
             const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(googleSheetUrl)}&timestamp=${new Date().getTime()}`;
             
             const response = await fetch(proxyUrl);
             
             if (!response.ok) {
-                 throw new Error('網路回應錯誤 (可能原因：CORS 代理服務失敗或網路受限)。');
+                 throw new Error('網路回應錯誤 (代理服務失敗或網路受限)。');
             }
             
             const data = await response.text();
             
-            // 跳過 CSV 標題行 (通常是第一行)
             const rows = data.split(/\r\n|\n/).slice(1);
             
             const portfolioData = rows.map(row => {
@@ -243,4 +243,224 @@
                 
                 const cols = parseCSVLine(row);
                 
-                // 檢查欄位數必須夠多，才能包含到損益 (Index 12
+                // 檢查欄位數必須夠多，才能包含到損益 (Index 12)
+                if (cols.length < 13) return null; 
+
+                const cleanNum = (str) => {
+                    const cleanedStr = str.replace(/,/g, '').replace(/%/g, '');
+                    if (cleanedStr.trim() === '') return 0;
+                    return parseFloat(cleanedStr) || 0;
+                };
+
+                // V24 數據解析：使用絕對定位 (J=9, K=10, L=11, M=12)
+                try {
+                    return {
+                        code: cols[0],             
+                        name: cols[1],             
+                        cost: cleanNum(cols[9]),   
+                        value: cleanNum(cols[10]), 
+                        pl: cleanNum(cols[11]),    
+                        pct: cleanNum(cols[12])    
+                    };
+                } catch(e) {
+                    console.warn(`忽略無效資料行 (解析失敗): ${row}`, e);
+                    return null;
+                }
+            }).filter(item => item !== null && item.cost !== 0); 
+
+            if (portfolioData.length === 0) {
+                 throw new Error("解析後沒有有效的投資組合數據 (所有項目成本皆為 0 或格式不符)。");
+            }
+
+
+            window.lastPortfolioData = portfolioData; 
+            updateDashboard(portfolioData);
+            
+            const now = new Date();
+            document.getElementById('lastUpdated').innerText = `最後更新: ${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}:${now.getSeconds().toString().padStart(2,'0')}`;
+
+        } catch (error) {
+            console.error('讀取失敗:', error);
+            
+            let userMessage = error.message;
+
+            document.getElementById('tableBody').innerHTML = `<tr><td colspan="6" class="negative" style="text-align:center">
+                <strong>讀取資料失敗！</strong><br>
+                錯誤訊息: ${userMessage} <br>
+                <small>如果左側選單不能切換，請嘗試**硬性重新整理** (Ctrl/Cmd + Shift + R)。</small>
+            </td></tr>`;
+            document.getElementById('lastUpdated').innerText = '更新失敗';
+
+            // 重置 KPI
+            document.getElementById('kpi-cost').innerText = '0';
+            document.getElementById('kpi-value').innerText = '0';
+            document.getElementById('kpi-pl').innerText = '0';
+            document.getElementById('kpi-pct').innerText = '0.00%';
+            document.getElementById('kpi-pl').className = 'kpi-value';
+            document.getElementById('kpi-pct').className = 'kpi-value';
+        }
+    }
+
+    function updateDashboard(data) {
+        // 1. 計算總計
+        const totalCost = data.reduce((acc, curr) => acc + curr.cost, 0);
+        const totalValue = data.reduce((acc, curr) => acc + curr.value, 0);
+        const totalPL = totalValue - totalCost; 
+        const totalPct = totalCost > 0 ? (totalPL / totalCost) * 100 : 0;
+
+        // 2. 更新 KPI 卡片
+        document.getElementById('kpi-cost').innerText = parseInt(totalCost).toLocaleString();
+        document.getElementById('kpi-value').innerText = parseInt(totalValue).toLocaleString();
+        
+        const plEl = document.getElementById('kpi-pl');
+        plEl.innerText = (totalPL >= 0 ? '+' : '') + parseInt(totalPL).toLocaleString();
+        plEl.className = `kpi-value ${totalPL >= 0 ? 'positive' : 'negative'}`;
+        
+        const pctEl = document.getElementById('kpi-pct');
+        pctEl.innerText = (totalPct >= 0 ? '+' : '') + totalPct.toFixed(2) + '%';
+        pctEl.className = `kpi-value ${totalPct >= 0 ? 'positive' : 'negative'}`;
+
+        // 3. 更新圖表
+        updateCharts(data);
+
+        // 4. 更新表格
+        const tableBody = document.getElementById('tableBody');
+        tableBody.innerHTML = '';
+        
+        // 將數據按市值降序排序，並在表格中顯示
+        [...data].sort((a, b) => b.value - a.value).forEach(item => {
+            const row = document.createElement('tr');
+            const plClass = item.pl >= 0 ? 'positive' : 'negative';
+            row.innerHTML = `
+                <td>${item.code}</td>
+                <td>${item.name}</td>
+                <td>${Math.round(item.cost).toLocaleString()}</td>
+                <td>${Math.round(item.value).toLocaleString()}</td>
+                <td class="${plClass}">${Math.round(item.pl).toLocaleString()}</td>
+                <td class="${plClass}">${item.pct.toFixed(2)}%</td>
+            `;
+            tableBody.appendChild(row);
+        });
+    }
+
+    function updateCharts(data) {
+        if (chartInstance1) chartInstance1.destroy();
+        if (chartInstance2) chartInstance2.destroy();
+
+        // 圖表 1: 前 10 大持倉 (橫向柱狀圖)
+        const sortedByValue = [...data].sort((a, b) => b.value - a.value).slice(0, 10);
+        chartInstance1 = new Chart(document.getElementById('topHoldingsChart'), {
+            type: 'bar',
+            data: {
+                labels: sortedByValue.map(i => i.name),
+                datasets: [{
+                    label: '庫存現值',
+                    data: sortedByValue.map(i => i.value),
+                    backgroundColor: '#00aaff', 
+                    borderRadius: 4
+                }]
+            },
+            // V24: 簡化 options，避免 JS 崩潰
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false, 
+                plugins: { 
+                    legend: { display: false },
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                    },
+                    y: {
+                        // 移除複雜的 ticks 格式化
+                    }
+                }
+            }
+        });
+
+        // 圖表 2: 損益來源 (垂直柱狀圖)
+        const sortedByPL = [...data].sort((a, b) => b.pl - a.pl);
+        const topGainers = sortedByPL.filter(i => i.pl > 0).slice(0, 5); 
+        const topLosers = sortedByPL.filter(i => i.pl < 0).slice(-5);
+        
+        const plChartData = [...new Set([...topGainers, ...topLosers])]
+                             .filter(item => item.pl !== 0)
+                             .sort((a, b) => b.pl - a.pl); 
+        
+        chartInstance2 = new Chart(document.getElementById('plChart'), {
+            type: 'bar',
+            data: {
+                labels: plChartData.map(i => i.name),
+                datasets: [{
+                    label: '損益金額',
+                    data: plChartData.map(i => i.pl),
+                    backgroundColor: plChartData.map(i => i.pl >= 0 ? '#28a745' : '#dc3545'),
+                    borderRadius: 4
+                }]
+            },
+            // V24: 簡化 options，避免 JS 崩潰
+            options: {
+                responsive: true,
+                maintainAspectRatio: false, 
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                    },
+                    x: {
+                        // 移除複雜的 ticks 格式化
+                    }
+                }
+            }
+        });
+    }
+
+    function sortTable(n) {
+        // ... (排序函數保持不變)
+        var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+        table = document.getElementById("holdingsTable");
+        switching = true;
+        dir = "asc";
+        while (switching) {
+            switching = false;
+            rows = table.rows;
+            for (i = 1; i < (rows.length - 1); i++) {
+                shouldSwitch = false;
+                x = rows[i].getElementsByTagName("TD")[n];
+                y = rows[i + 1].getElementsByTagName("TD")[n];
+                
+                let xVal = x.innerHTML.replace(/,/g, '').replace(/%/g, '');
+                let yVal = y.innerHTML.replace(/,/g, '').replace(/%/g, '');
+                let isNum = !isNaN(parseFloat(xVal));
+
+                if (dir == "asc") {
+                    if (isNum ? (parseFloat(xVal) > parseFloat(yVal)) : (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase())) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                } else if (dir == "desc") {
+                    if (isNum ? (parseFloat(xVal) < parseFloat(yVal)) : (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase())) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+            }
+            if (shouldSwitch) {
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+                switchcount ++;
+            } else {
+                if (switchcount == 0 && dir == "asc") {
+                    dir = "desc";
+                    switching = true;
+                }
+            }
+        }
+    }
+
+    fetchData();
+</script>
+
+</body>
+</html>
