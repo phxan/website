@@ -245,7 +245,7 @@
 
         <div class="text-right hidden md:block">
           <div class="text-[10px] t-text-muted leading-none">資料時間</div>
-          <div id="lastUpdateText" class="text-xs font-mono t-text-sub mt-0.5">2026/11/12 23:50:55</div>
+          <div id="lastUpdateText" class="text-xs font-mono t-text-sub mt-0.5">2026/11/17 21:20:32</div>
         </div>
 
         <button id="btnLockApp" onclick="lockAppNow()" class="t-bg-card2 t-text-sub border t-border text-xs font-medium px-2.5 py-1.5 rounded-lg hover:opacity-80 transition flex items-center gap-1" title="立即鎖定戰情室畫面 (需輸入密碼 6790 解鎖)">
@@ -253,7 +253,7 @@
         </button>
 
         <button id="btnLiveFetch" onclick="triggerRealTimeQuoteFetch()" style="background: var(--accent-bg); color: var(--accent-text);" class="flex items-center gap-1 text-xs font-semibold px-3 py-1.5 rounded-lg shadow hover:opacity-90 active:scale-95 transition">
-          <span id="refreshSpinner" class="inline-block animate-spin">🔄</span>
+          <span id="refreshSpinner" class="inline-block">🔄</span>
           <span>同步最新報價</span>
         </button>
       </div>
@@ -312,10 +312,10 @@
               <span>📊</span><span id="drawerArrow_intraday">▾</span>
             </span>
           </div>
-          <div id="kpiTodayPnl" class="mt-0.5 text-base sm:text-2xl font-bold tabular-nums t-down">-257,595</div>
+          <div id="kpiTodayPnl" class="mt-0.5 text-base sm:text-2xl font-bold tabular-nums t-down">-301,399</div>
           <div class="mt-0.5 flex items-center gap-2">
-            <span id="kpiTodayPct" class="text-xs font-semibold tabular-nums t-down">-0.96%</span>
-            <span id="kpiUpDownCount" class="text-[11px] t-text-muted hidden sm:inline">漲 15 / 跌 23 / 平 5</span>
+            <span id="kpiTodayPct" class="text-xs font-semibold tabular-nums t-down">-1.16%</span>
+            <span id="kpiUpDownCount" class="text-[11px] t-text-muted hidden sm:inline">漲 8 / 跌 35 / 平 0</span>
           </div>
         </div>
 
@@ -327,9 +327,9 @@
               <span>🥧</span><span id="drawerArrow_winloss">▾</span>
             </span>
           </div>
-          <div id="kpiTotalPnl" class="mt-0.5 text-base sm:text-2xl font-bold tabular-nums t-up">+4,547,147</div>
+          <div id="kpiTotalPnl" class="mt-0.5 text-base sm:text-2xl font-bold tabular-nums t-up">+3,540,294</div>
           <div class="mt-0.5 flex items-center gap-2">
-            <span id="kpiTotalPct" class="text-xs font-semibold tabular-nums t-up">+20.71%</span>
+            <span id="kpiTotalPct" class="text-xs font-semibold tabular-nums t-up">+16.02%</span>
             <span id="kpiWinLossMini" class="text-[11px] t-text-muted hidden sm:inline">獲利 27 檔 / 虧損 16 檔</span>
           </div>
         </div>
@@ -342,9 +342,9 @@
               <span>🍩</span><span id="drawerArrow_holdings">▾</span>
             </span>
           </div>
-          <div id="kpiTotalMv" class="mt-0.5 text-base sm:text-2xl font-bold tabular-nums t-text-main">26,499,448</div>
+          <div id="kpiTotalMv" class="mt-0.5 text-base sm:text-2xl font-bold tabular-nums t-text-main">25,636,340</div>
           <div class="mt-0.5 text-xs t-text-muted tabular-nums">
-            成本 <span id="kpiTotalCost" class="t-text-sub font-medium">21,952,301</span>
+            成本 <span id="kpiTotalCost" class="t-text-sub font-medium">22,096,046</span>
           </div>
         </div>
       </div>
@@ -362,25 +362,25 @@
               <div class="flex items-center gap-2">
                 <span class="w-3 h-3 rounded-sm inline-block" style="background: var(--up-color);"></span>
                 <span class="t-text-sub">獲利市值佔比：</span>
-                <span id="drawerWinMvPct" class="t-up font-bold tabular-nums">77%</span>
+                <span id="drawerWinMvPct" class="t-up font-bold tabular-nums">78%</span>
               </div>
               <div class="flex items-center gap-2">
                 <span class="w-3 h-3 rounded-sm inline-block" style="background: var(--down-color);"></span>
                 <span class="t-text-sub">虧損市值佔比：</span>
-                <span id="drawerLossMvPct" class="t-down font-bold tabular-nums">23%</span>
+                <span id="drawerLossMvPct" class="t-down font-bold tabular-nums">22%</span>
               </div>
             </div>
           </div>
           <div class="grid grid-cols-2 gap-3 t-bg-card2 p-3 rounded-xl border t-border">
             <div class="pl-3 space-y-1" style="border-left: 3px solid var(--up-color);">
               <div class="text-xs t-text-muted">獲利檔數：<span id="drawerWinCount" class="t-text-main font-bold">27 檔</span></div>
-              <div class="text-xs t-text-muted">獲利金額：<span id="drawerWinAmount" class="t-up font-bold tabular-nums">+5,185,266 元</span></div>
-              <div class="text-[11px] t-text-muted">獲利總市值：<span id="drawerWinMv" class="t-text-sub tabular-nums">20,440,986 元</span></div>
+              <div class="text-xs t-text-muted">獲利金額：<span id="drawerWinAmount" class="t-up font-bold tabular-nums">+4,519,935 元</span></div>
+              <div class="text-[11px] t-text-muted">獲利總市值：<span id="drawerWinMv" class="t-text-sub tabular-nums">19,904,417 元</span></div>
             </div>
             <div class="pl-3 space-y-1" style="border-left: 3px solid var(--down-color);">
               <div class="text-xs t-text-muted">虧損檔數：<span id="drawerLossCount" class="t-text-main font-bold">16 檔</span></div>
-              <div class="text-xs t-text-muted">虧損金額：<span id="drawerLossAmount" class="t-down font-bold tabular-nums">-638,119 元</span></div>
-              <div class="text-[11px] t-text-muted">虧損總市值：<span id="drawerLossMv" class="t-text-sub tabular-nums">6,058,462 元</span></div>
+              <div class="text-xs t-text-muted">虧損金額：<span id="drawerLossAmount" class="t-down font-bold tabular-nums">-979,641 元</span></div>
+              <div class="text-[11px] t-text-muted">虧損總市值：<span id="drawerLossMv" class="t-text-sub tabular-nums">5,731,923 元</span></div>
             </div>
           </div>
         </div>
@@ -418,7 +418,7 @@
         <!-- 第一層：類型篩選膠囊 + 搜尋框 + 欄位切換 -->
         <div class="p-2.5 sm:p-3 space-y-2 border-b t-border">
           <div id="categoryFilterBar" class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-0.5">
-            <button onclick="setCategoryFilter('ALL')" data-cat="ALL" class="cat-pill px-2.5 py-1 rounded-full text-xs font-semibold whitespace-nowrap transition" style="background-color: rgb(46, 52, 64); color: rgb(216, 222, 233);">全部類型 (43)</button>
+            <button onclick="setCategoryFilter('ALL')" data-cat="ALL" class="cat-pill px-2.5 py-1 rounded-full text-xs font-semibold whitespace-nowrap transition" style="background-color: rgb(136, 192, 208); color: rgb(27, 31, 39);">全部類型 (43)</button>
             <button onclick="setCategoryFilter('高股息')" data-cat="高股息" class="cat-pill px-2.5 py-1 rounded-full text-xs font-medium whitespace-nowrap transition" style="background-color: rgb(46, 52, 64); color: rgb(216, 222, 233);">高股息 (4)</button>
             <button onclick="setCategoryFilter('國外市值型')" data-cat="國外市值型" class="cat-pill px-2.5 py-1 rounded-full text-xs font-medium whitespace-nowrap transition" style="background-color: rgb(46, 52, 64); color: rgb(216, 222, 233);">國外市值型 (3)</button>
             <button onclick="setCategoryFilter('債券型')" data-cat="債券型" class="cat-pill px-2.5 py-1 rounded-full text-xs font-medium whitespace-nowrap transition" style="background-color: rgb(46, 52, 64); color: rgb(216, 222, 233);">債券型 (3)</button>
@@ -427,17 +427,17 @@
             <button onclick="setCategoryFilter('國內市值型')" data-cat="國內市值型" class="cat-pill px-2.5 py-1 rounded-full text-xs font-medium whitespace-nowrap transition" style="background-color: rgb(46, 52, 64); color: rgb(216, 222, 233);">國內市值型 (1)</button>
             <button onclick="setCategoryFilter('國內槓桿市值型')" data-cat="國內槓桿市值型" class="cat-pill px-2.5 py-1 rounded-full text-xs font-medium whitespace-nowrap transition" style="background-color: rgb(46, 52, 64); color: rgb(216, 222, 233);">國內槓桿市值型 (4)</button>
             <button onclick="setCategoryFilter('傳產股')" data-cat="傳產股" class="cat-pill px-2.5 py-1 rounded-full text-xs font-medium whitespace-nowrap transition" style="background-color: rgb(46, 52, 64); color: rgb(216, 222, 233);">傳產股 (5)</button>
-            <button onclick="setCategoryFilter('國外槓桿市值型')" data-cat="國外槓桿市值型" class="cat-pill px-2.5 py-1 rounded-full text-xs font-medium whitespace-nowrap transition" style="background-color: rgb(136, 192, 208); color: rgb(27, 31, 39);">國外槓桿市值型 (1)</button>
+            <button onclick="setCategoryFilter('國外槓桿市值型')" data-cat="國外槓桿市值型" class="cat-pill px-2.5 py-1 rounded-full text-xs font-medium whitespace-nowrap transition" style="background-color: rgb(46, 52, 64); color: rgb(216, 222, 233);">國外槓桿市值型 (1)</button>
           </div>
 
           <!-- 季線位階與乖離強弱快速篩選列 (針對群益證券季線加減碼策略設計) -->
           <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-0.5 text-xs">
             <span class="t-text-muted font-medium whitespace-nowrap mr-0.5">📐 季線位階：</span>
-            <button onclick="setMaFilter('ALL')" data-ma="ALL" class="ma-pill px-2.5 py-0.5 rounded-md font-semibold whitespace-nowrap transition" style="background-color: rgb(136, 192, 208); color: rgb(27, 31, 39);">全部標的 (1)</button>
-            <button onclick="setMaFilter('ABOVE')" data-ma="ABOVE" class="ma-pill px-2.5 py-0.5 rounded-md font-medium whitespace-nowrap transition" style="background-color: rgb(46, 52, 64); color: rgb(216, 222, 233);">🔴 站上季線 &gt;=0% (0)</button>
-            <button onclick="setMaFilter('BELOW')" data-ma="BELOW" class="ma-pill px-2.5 py-0.5 rounded-md font-medium whitespace-nowrap transition" style="background-color: rgb(46, 52, 64); color: rgb(216, 222, 233);">🟢 跌破季線 &lt;0% 低接區 (1)</button>
-            <button onclick="setMaFilter('DEEP_BELOW')" data-ma="DEEP_BELOW" class="ma-pill px-2.5 py-0.5 rounded-md font-medium whitespace-nowrap transition" style="background-color: rgb(46, 52, 64); color: rgb(216, 222, 233);">❄️ 深跌負乖離 &lt;-10% (1)</button>
-            <button onclick="setMaFilter('NEAR_MA')" data-ma="NEAR_MA" class="ma-pill px-2.5 py-0.5 rounded-md font-medium whitespace-nowrap transition" style="background-color: rgb(46, 52, 64); color: rgb(216, 222, 233);">⚖️ 貼近季線 ±3% 內 (0)</button>
+            <button onclick="setMaFilter('ALL')" data-ma="ALL" class="ma-pill px-2.5 py-0.5 rounded-md font-semibold whitespace-nowrap transition" style="background-color: rgb(136, 192, 208); color: rgb(27, 31, 39);">全部標的 (43)</button>
+            <button onclick="setMaFilter('ABOVE')" data-ma="ABOVE" class="ma-pill px-2.5 py-0.5 rounded-md font-medium whitespace-nowrap transition" style="background-color: rgb(46, 52, 64); color: rgb(216, 222, 233);">🔴 站上季線 &gt;=0% (9)</button>
+            <button onclick="setMaFilter('BELOW')" data-ma="BELOW" class="ma-pill px-2.5 py-0.5 rounded-md font-medium whitespace-nowrap transition" style="background-color: rgb(46, 52, 64); color: rgb(216, 222, 233);">🟢 跌破季線 &lt;0% 低接區 (29)</button>
+            <button onclick="setMaFilter('DEEP_BELOW')" data-ma="DEEP_BELOW" class="ma-pill px-2.5 py-0.5 rounded-md font-medium whitespace-nowrap transition" style="background-color: rgb(46, 52, 64); color: rgb(216, 222, 233);">❄️ 深跌負乖離 &lt;-10% (12)</button>
+            <button onclick="setMaFilter('NEAR_MA')" data-ma="NEAR_MA" class="ma-pill px-2.5 py-0.5 rounded-md font-medium whitespace-nowrap transition" style="background-color: rgb(46, 52, 64); color: rgb(216, 222, 233);">⚖️ 貼近季線 ±3% 內 (11)</button>
           </div>
 
           <div class="flex flex-wrap items-center justify-between gap-2">
@@ -474,11 +474,11 @@
       <div class="t-bg-card rounded-b-xl border-x border-b t-border overflow-hidden shadow-sm">
         <div id="stockListBody" class="divide-y t-border text-sm tabular-nums"></div>
         <div id="stockListFoot" class="t-bg-thead border-t-2 t-border font-bold text-xs sm:text-sm tabular-nums px-3 sm:px-4 py-3 grid grid-cols-12 items-center">
-          <div class="col-span-3 t-text-main">篩選合計 (1 檔)</div>
-          <div class="col-span-2 text-right t-down">-1,627</div>
-          <div class="col-span-2 text-right t-text-sub">市值 20萬</div>
-          <div class="col-span-2 text-right text-xs t-text-sub">站上0 / 破線1</div>
-          <div class="col-span-3 text-right t-down">-3,475 (-1.68%)</div>
+          <div class="col-span-3 t-text-main">篩選合計 (43 檔)</div>
+          <div class="col-span-2 text-right t-down">-301,399</div>
+          <div class="col-span-2 text-right t-text-sub">市值 2564萬</div>
+          <div class="col-span-2 text-right text-xs t-text-sub">站上9 / 破線29</div>
+          <div class="col-span-3 text-right t-up">+3,540,294 (+16.02%)</div>
         </div>
       </div>
       <p class="text-xs t-text-muted text-center pt-2">💡 點擊任一檔個股列，可檢視該檔股票在各券商的分戶持股成本與損益明細</p>
@@ -496,15 +496,15 @@
           <div class="flex flex-wrap items-center gap-2 text-xs">
             <div class="px-2.5 py-1 rounded-lg t-bg-card2 border t-border">
               <span class="t-text-muted">停利總期望獲利：</span>
-              <span id="tpRadarTotalProfit" class="font-bold tabular-nums t-up">+NT$521,050</span>
+              <span id="tpRadarTotalProfit" class="font-bold tabular-nums t-up">+NT$514,905</span>
             </div>
             <div class="px-2.5 py-1 rounded-lg t-bg-card2 border t-border">
               <span class="t-text-muted">掛買最高總支出：</span>
-              <span id="buyRadarMaxCost" class="font-bold tabular-nums t-text-main">NT$164,032</span>
+              <span id="buyRadarMaxCost" class="font-bold tabular-nums t-text-main">NT$173,457</span>
             </div>
             <div class="px-2.5 py-1 rounded-lg t-bg-card2 border t-border">
               <span class="t-text-muted">距離 &lt;1% 即將支出：</span>
-              <span id="buyRadarNearCost" class="font-bold tabular-nums t-down">NT$14,879 (3檔)</span>
+              <span id="buyRadarNearCost" class="font-bold tabular-nums t-down">NT$4,978 (1檔)</span>
             </div>
           </div>
         </div>
@@ -513,7 +513,7 @@
           <!-- 左表：波段停利雷達 -->
           <div class="t-bg-card2 rounded-xl border t-border p-3 space-y-2">
             <div class="flex items-center justify-between">
-              <span id="tpRadarCountTitle" class="text-xs font-bold t-text-main">📈 群益波段停利距離雷達（35 檔，預設依距離 % 由近至遠）</span>
+              <span id="tpRadarCountTitle" class="text-xs font-bold t-text-main">📈 群益波段停利距離雷達（37 檔，預設依距離 % 由近至遠）</span>
               <span class="text-[11px] t-text-muted">點擊表頭排序</span>
             </div>
             <div class="overflow-x-auto max-h-80 overflow-y-auto">
@@ -536,7 +536,7 @@
           <!-- 右表：低接掛買雷達 -->
           <div class="t-bg-card2 rounded-xl border t-border p-3 space-y-2">
             <div class="flex items-center justify-between">
-              <span id="buyRadarCountTitle" class="text-xs font-bold t-text-main">🛒 群益低接掛買觸價雷達（33 檔，預設依距離 % 由近至遠）</span>
+              <span id="buyRadarCountTitle" class="text-xs font-bold t-text-main">🛒 群益低接掛買觸價雷達（34 檔，預設依距離 % 由近至遠）</span>
               <span class="text-[11px] t-text-muted">點擊表頭排序</span>
             </div>
             <div class="overflow-x-auto max-h-80 overflow-y-auto">
@@ -566,36 +566,36 @@
         <div onclick="handleBrokerCardClick('群益證券')" class="t-bg-card rounded-xl border t-border p-3.5 cursor-pointer hover:opacity-90 transition space-y-1.5">
           <div class="flex items-center justify-between">
             <span class="font-bold t-text-main text-sm">群益證券</span>
-            <span class="text-[11px] px-2 py-0.5 rounded t-bg-card2 t-text-sub">40 檔 · 佔 44.5%</span>
+            <span class="text-[11px] px-2 py-0.5 rounded t-bg-card2 t-text-sub">40 檔 · 佔 44.6%</span>
           </div>
-          <div class="text-lg font-bold tabular-nums t-down">-160,152 <span class="text-xs">(-1.3%)</span></div>
+          <div class="text-lg font-bold tabular-nums t-down">-655,064 <span class="text-xs">(-5.4%)</span></div>
           <div class="text-xs t-text-muted flex justify-between tabular-nums">
             <span>今日損益:</span>
-            <span class="font-semibold t-down">-132,871</span>
+            <span class="font-semibold t-down">-169,763</span>
           </div>
           <div class="text-xs t-text-muted flex justify-between tabular-nums">
             <span>庫存市值:</span>
-            <span class="t-text-main font-medium">11,783,572</span>
+            <span class="t-text-main font-medium">11,432,460</span>
           </div>
           <div class="text-xs t-text-muted flex justify-between tabular-nums">
             <span>庫存成本:</span>
-            <span class="t-text-sub">11,943,724</span>
+            <span class="t-text-sub">12,087,524</span>
           </div>
         </div>
       
         <div onclick="handleBrokerCardClick('元大證金')" class="t-bg-card rounded-xl border t-border p-3.5 cursor-pointer hover:opacity-90 transition space-y-1.5">
           <div class="flex items-center justify-between">
             <span class="font-bold t-text-main text-sm">元大證金</span>
-            <span class="text-[11px] px-2 py-0.5 rounded t-bg-card2 t-text-sub">5 檔 · 佔 40.3%</span>
+            <span class="text-[11px] px-2 py-0.5 rounded t-bg-card2 t-text-sub">5 檔 · 佔 40.0%</span>
           </div>
-          <div class="text-lg font-bold tabular-nums t-up">+3,716,274 <span class="text-xs">(+53.4%)</span></div>
+          <div class="text-lg font-bold tabular-nums t-up">+3,304,454 <span class="text-xs">(+47.5%)</span></div>
           <div class="text-xs t-text-muted flex justify-between tabular-nums">
             <span>今日損益:</span>
-            <span class="font-semibold t-down">-108,490</span>
+            <span class="font-semibold t-down">-84,130</span>
           </div>
           <div class="text-xs t-text-muted flex justify-between tabular-nums">
             <span>庫存市值:</span>
-            <span class="t-text-main font-medium">10,678,800</span>
+            <span class="t-text-main font-medium">10,266,980</span>
           </div>
           <div class="text-xs t-text-muted flex justify-between tabular-nums">
             <span>庫存成本:</span>
@@ -606,36 +606,36 @@
         <div onclick="handleBrokerCardClick('國泰證券')" class="t-bg-card rounded-xl border t-border p-3.5 cursor-pointer hover:opacity-90 transition space-y-1.5">
           <div class="flex items-center justify-between">
             <span class="font-bold t-text-main text-sm">國泰證券</span>
-            <span class="text-[11px] px-2 py-0.5 rounded t-bg-card2 t-text-sub">7 檔 · 佔 10.0%</span>
+            <span class="text-[11px] px-2 py-0.5 rounded t-bg-card2 t-text-sub">7 檔 · 佔 10.1%</span>
           </div>
-          <div class="text-lg font-bold tabular-nums t-up">+208,512 <span class="text-xs">(+8.5%)</span></div>
+          <div class="text-lg font-bold tabular-nums t-up">+128,399 <span class="text-xs">(+5.2%)</span></div>
           <div class="text-xs t-text-muted flex justify-between tabular-nums">
             <span>今日損益:</span>
-            <span class="font-semibold t-down">-11,259</span>
+            <span class="font-semibold t-down">-42,515</span>
           </div>
           <div class="text-xs t-text-muted flex justify-between tabular-nums">
             <span>庫存市值:</span>
-            <span class="t-text-main font-medium">2,662,006</span>
+            <span class="t-text-main font-medium">2,581,838</span>
           </div>
           <div class="text-xs t-text-muted flex justify-between tabular-nums">
             <span>庫存成本:</span>
-            <span class="t-text-sub">2,453,494</span>
+            <span class="t-text-sub">2,453,439</span>
           </div>
         </div>
       
         <div onclick="handleBrokerCardClick('富邦日盛')" class="t-bg-card rounded-xl border t-border p-3.5 cursor-pointer hover:opacity-90 transition space-y-1.5">
           <div class="flex items-center justify-between">
             <span class="font-bold t-text-main text-sm">富邦日盛</span>
-            <span class="text-[11px] px-2 py-0.5 rounded t-bg-card2 t-text-sub">19 檔 · 佔 5.2%</span>
+            <span class="text-[11px] px-2 py-0.5 rounded t-bg-card2 t-text-sub">19 檔 · 佔 5.3%</span>
           </div>
-          <div class="text-lg font-bold tabular-nums t-up">+781,645 <span class="text-xs">(+132.7%)</span></div>
+          <div class="text-lg font-bold tabular-nums t-up">+761,725 <span class="text-xs">(+129.3%)</span></div>
           <div class="text-xs t-text-muted flex justify-between tabular-nums">
             <span>今日損益:</span>
-            <span class="font-semibold t-down">-4,878</span>
+            <span class="font-semibold t-down">-5,006</span>
           </div>
           <div class="text-xs t-text-muted flex justify-between tabular-nums">
             <span>庫存市值:</span>
-            <span class="t-text-main font-medium">1,370,556</span>
+            <span class="t-text-main font-medium">1,350,636</span>
           </div>
           <div class="text-xs t-text-muted flex justify-between tabular-nums">
             <span>庫存成本:</span>
@@ -648,14 +648,14 @@
             <span class="font-bold t-text-main text-sm">凱基證券</span>
             <span class="text-[11px] px-2 py-0.5 rounded t-bg-card2 t-text-sub">2 檔 · 佔 0.0%</span>
           </div>
-          <div class="text-lg font-bold tabular-nums t-up">+872 <span class="text-xs">(+23.9%)</span></div>
+          <div class="text-lg font-bold tabular-nums t-up">+777 <span class="text-xs">(+21.3%)</span></div>
           <div class="text-xs t-text-muted flex justify-between tabular-nums">
             <span>今日損益:</span>
-            <span class="font-semibold t-down">-95</span>
+            <span class="font-semibold t-up">+15</span>
           </div>
           <div class="text-xs t-text-muted flex justify-between tabular-nums">
             <span>庫存市值:</span>
-            <span class="t-text-main font-medium">4,518</span>
+            <span class="t-text-main font-medium">4,423</span>
           </div>
           <div class="text-xs t-text-muted flex justify-between tabular-nums">
             <span>庫存成本:</span>
@@ -787,8 +787,8 @@
             <p class="text-xs t-text-muted mt-0.5">同步自「證券資料總表 ➔ 儀表板」與「儀表板 ➔ 投資策略」：防守型高息/債券/金融鎖定現金流套利，攻擊型主動/正2/蛛網拼週轉價差。</p>
           </div>
           <div class="flex flex-wrap items-center gap-2 text-xs">
-            <span class="px-2.5 py-1 rounded-lg t-bg-card2 border t-border">⚔️ 攻擊型部位：<strong id="atkMvBadge" class="t-up tabular-nums">NT$3,246,609 (12.25%)</strong></span>
-            <span class="px-2.5 py-1 rounded-lg t-bg-card2 border t-border">🛡️ 防守型部位：<strong id="defMvBadge" class="t-text-main tabular-nums">NT$23,252,840 (87.75%)</strong></span>
+            <span class="px-2.5 py-1 rounded-lg t-bg-card2 border t-border">⚔️ 攻擊型部位：<strong id="atkMvBadge" class="t-up tabular-nums">NT$2,964,987 (11.57%)</strong></span>
+            <span class="px-2.5 py-1 rounded-lg t-bg-card2 border t-border">🛡️ 防守型部位：<strong id="defMvBadge" class="t-text-main tabular-nums">NT$22,671,351 (88.43%)</strong></span>
           </div>
         </div>
         <div id="strategyBlueprintGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
@@ -824,7 +824,7 @@
                 <span class="font-bold t-text-main text-xs sm:text-sm">3️⃣ 存股質押：高股息 + 債券型 ETF</span>
                 <span class="text-[10px] px-2 py-0.5 rounded-full t-bg-card border t-border t-up font-semibold whitespace-nowrap">維持率 &gt;180% 利差套利</span>
               </div>
-              <p class="text-[11px] t-text-muted leading-relaxed"><strong>適用標的：</strong>0056、00713、00878、00919、00933B、00937B、00953B（核心7大底倉共 529.22 張，市值 1648.4 萬）</p>
+              <p class="text-[11px] t-text-muted leading-relaxed"><strong>適用標的：</strong>0056、00713、00878、00919、00933B、00937B、00953B（核心7大底倉共 530.14 張，市值 1600.9 萬）</p>
             </div>
             <div class="pt-2 border-t t-border text-[11px] t-text-sub leading-relaxed">
               <strong class="t-text-main">操作紀律：</strong>長期布局依成本計算年配息達 9.91%。利用質押開槓桿，貸款利率約 2.94%~3.92%，以配息繳質押息每年淨套利 5%~6%；自我要求整體維持率 &gt;180%（法定 &gt;167% 免還本金）。
@@ -912,28 +912,28 @@
       <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
         <div class="t-bg-card rounded-xl border t-border p-3.5 space-y-1">
           <div class="text-xs t-text-muted">2026 累計已實現總獲利</div>
-          <div id="qKpiRealizedPnl" class="text-lg sm:text-xl font-bold tabular-nums t-up">+3,792,109</div>
+          <div id="qKpiRealizedPnl" class="text-lg sm:text-xl font-bold tabular-nums t-up">+3,793,549</div>
           <div id="qKpiTradeCount" class="text-[11px] t-text-sub tabular-nums">1~11月月均 +34.5萬 · 已實現 283 筆</div>
         </div>
         <div class="t-bg-card rounded-xl border t-border p-3.5 space-y-1">
           <div class="text-xs t-text-muted">主要獲利：2026 已實現配息</div>
           <div id="qKpiWinRate" class="text-lg sm:text-xl font-bold tabular-nums t-up">+1,439,242</div>
-          <div id="qKpiWinLossCount" class="text-[11px] t-text-sub tabular-nums">佔比 38.0% · 月均領息 13.1萬</div>
+          <div id="qKpiWinLossCount" class="text-[11px] t-text-sub tabular-nums">佔比 37.9% · 月均領息 13.1萬</div>
         </div>
         <div class="t-bg-card rounded-xl border t-border p-3.5 space-y-1">
           <div class="text-xs t-text-muted">次要獲利：2026 已實現價差</div>
-          <div id="qKpiProfitFactor" class="text-lg sm:text-xl font-bold tabular-nums t-up">+2,352,867</div>
-          <div id="qKpiMaxWin" class="text-[11px] t-text-sub tabular-nums">佔比 62.0% · 11月 +4,236元</div>
+          <div id="qKpiProfitFactor" class="text-lg sm:text-xl font-bold tabular-nums t-up">+2,354,307</div>
+          <div id="qKpiMaxWin" class="text-[11px] t-text-sub tabular-nums">佔比 62.1% · 11月 +5,676元</div>
         </div>
         <div class="t-bg-card rounded-xl border t-border p-3.5 space-y-1">
           <div class="text-xs t-text-muted">財富自由市值目標達成率</div>
-          <div id="qKpiRecent30d" class="text-lg sm:text-xl font-bold tabular-nums t-text-main">78.4%</div>
-          <div id="qKpiRecentTrend" class="text-[11px] t-text-sub tabular-nums">市值 2650萬 / 目標 3382萬</div>
+          <div id="qKpiRecent30d" class="text-lg sm:text-xl font-bold tabular-nums t-text-main">75.8%</div>
+          <div id="qKpiRecentTrend" class="text-[11px] t-text-sub tabular-nums">市值 2564萬 / 目標 3382萬</div>
         </div>
         <div class="t-bg-card rounded-xl border t-border p-3.5 space-y-1 col-span-2 sm:col-span-1">
           <div class="text-xs t-text-muted">🛡️ 質押維持率 (群益 / 元大)</div>
-          <div id="qKpiTop5Conc" class="text-lg sm:text-xl font-bold tabular-nums t-up">187.1% / 218.6%</div>
-          <div id="qKpiMaxRatioSub" class="text-[11px] t-text-sub tabular-nums">全庫存最高 246.6% / 227.7% (N2)</div>
+          <div id="qKpiTop5Conc" class="text-lg sm:text-xl font-bold tabular-nums t-up">174.3% / 210.2%</div>
+          <div id="qKpiMaxRatioSub" class="text-[11px] t-text-sub tabular-nums">全庫存最高 239.3% / 218.9% (N2)</div>
         </div>
       </div>
 
@@ -944,7 +944,7 @@
             <h3 class="text-sm sm:text-base font-bold t-text-main">🛡️ 質押維持率與繳息 / 單筆借據預警中心（隨盤中股價動態重算維持率）</h3>
             <p class="text-xs t-text-muted">兩戶質押總借款 <strong class="t-text-main">9,377,825 元</strong> ｜ 合計月息 <strong class="t-text-main">26,732 元</strong>（平均利率 <strong class="t-text-main">3.42%</strong>）｜ 展期借新還舊門檻 <strong class="t-up">167%</strong></p>
           </div>
-          <span class="text-xs px-2.5 py-1 rounded-lg t-bg-card2 t-text-sub border t-border">兩戶全庫存最高維持率：<strong id="pledgeOverallMaxRatio" class="t-up">239.53%</strong></span>
+          <span class="text-xs px-2.5 py-1 rounded-lg t-bg-card2 t-text-sub border t-border">兩戶全庫存最高維持率：<strong id="pledgeOverallMaxRatio" class="t-up">231.39%</strong></span>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 text-xs tabular-nums">
@@ -957,50 +957,39 @@
               </div>
               <div class="text-right">
                 <div class="text-[10px] t-text-muted">目前設質維持率</div>
-                <div id="pledgeCapCurrRatio" class="text-base sm:text-lg font-bold t-up">187.07%</div>
+                <div id="pledgeCapCurrRatio" class="text-base sm:text-lg font-bold t-up">174.31%</div>
               </div>
             </div>
 
             <div class="grid grid-cols-3 gap-2 text-center t-bg-card p-2.5 rounded-lg border t-border">
               <div>
                 <div class="text-[10px] t-text-muted">設質擔保市值</div>
-                <div id="pledgeCapMv" class="font-bold t-text-main mt-0.5">8,937,750</div>
+                <div id="pledgeCapMv" class="font-bold t-text-main mt-0.5">8,328,060</div>
               </div>
               <div>
                 <div class="text-[10px] t-text-muted">全戶最高維持率</div>
-                <div id="pledgeCapMaxRatio" class="font-bold t-up mt-0.5">246.63%</div>
+                <div id="pledgeCapMaxRatio" class="font-bold t-up mt-0.5">239.28%</div>
               </div>
               <div>
                 <div class="text-[10px] t-text-muted">距 167% 抗跌空間</div>
-                <div id="pledgeCapBuffer" class="font-bold t-text-sub mt-0.5">-32.3% (29,179點)</div>
+                <div id="pledgeCapBuffer" class="font-bold t-text-sub mt-0.5">-30.2% (27,981點)</div>
               </div>
             </div>
 
             <!-- 群益 60 天內到期繳息統計摘要與篩選 -->
             <div class="space-y-2">
               <div class="flex flex-wrap items-center justify-between gap-1">
-                <div id="pledgeCapDueSummaryText" class="font-semibold t-text-main text-xs">⏰ 60天內(9筆)：<span class="t-up font-bold">🔴 20天內待繳 0筆 ($0)</span> ｜ <span class="t-text-sub">🟡 30~60天預告 4筆 ($14,080)</span> ｜ <span class="t-down">✅ 已繳免補 5筆</span></div>
+                <div id="pledgeCapDueSummaryText" class="font-semibold t-text-main text-xs">⏰ 60天內(8筆)：<span class="t-up font-bold">🔴 20天內待繳 0筆 ($0)</span> ｜ <span class="t-text-sub">🟡 30~60天預告 4筆 ($14,080)</span> ｜ <span class="t-down">✅ 已繳免補 4筆</span></div>
                 <div class="flex items-center gap-1 text-[11px]">
-                  <button onclick="setCapPledgeFilter('ALL')" data-cp="ALL" class="cp-pill px-2 py-0.5 rounded font-semibold transition" style="background-color: rgb(136, 192, 208); color: rgb(27, 31, 39);">全部(9)</button>
+                  <button onclick="setCapPledgeFilter('ALL')" data-cp="ALL" class="cp-pill px-2 py-0.5 rounded font-semibold transition" style="background-color: rgb(136, 192, 208); color: rgb(27, 31, 39);">全部(8)</button>
                   <button onclick="setCapPledgeFilter('UNPAID')" data-cp="UNPAID" class="cp-pill px-2 py-0.5 rounded font-medium transition" style="background-color: rgb(46, 52, 64); color: rgb(216, 222, 233);">待繳/預告(4)</button>
-                  <button onclick="setCapPledgeFilter('PAID')" data-cp="PAID" class="cp-pill px-2 py-0.5 rounded font-medium transition" style="background-color: rgb(46, 52, 64); color: rgb(216, 222, 233);">已繳免補(5)</button>
+                  <button onclick="setCapPledgeFilter('PAID')" data-cp="PAID" class="cp-pill px-2 py-0.5 rounded font-medium transition" style="background-color: rgb(46, 52, 64); color: rgb(216, 222, 233);">已繳免補(4)</button>
                 </div>
               </div>
               <div id="pledgeCapUpcomingList" class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 max-h-56 overflow-y-auto pr-0.5">
-            <div class="flex items-center justify-between t-bg-card px-2.5 py-1.5 rounded border t-border opacity-70" title="R欄已填繳息日：2026-10-29，本波已繳清不需再補錢">
-              <div>
-                <span class="font-semibold t-down">✅ 11-17 (剩5天)</span>
-                <span class="text-[10px] t-text-muted ml-1">借18萬</span>
-              </div>
-              <div class="text-right">
-                <span class="text-[11px] font-bold t-down">已繳免補 (10-29)</span>
-                <span class="text-[10px] t-text-muted block line-through">息 $2,547</span>
-              </div>
-            </div>
-          
             <div class="flex items-center justify-between t-bg-card px-2.5 py-1.5 rounded border t-border opacity-70" title="R欄已填繳息日：2026-11-02，本波已繳清不需再補錢">
               <div>
-                <span class="font-semibold t-down">✅ 11-19 (剩7天)</span>
+                <span class="font-semibold t-down">✅ 11-19 (剩2天)</span>
                 <span class="text-[10px] t-text-muted ml-1">借10萬</span>
               </div>
               <div class="text-right">
@@ -1011,7 +1000,7 @@
           
             <div class="flex items-center justify-between t-bg-card px-2.5 py-1.5 rounded border t-border opacity-70" title="R欄已填繳息日：2026-11-05，本波已繳清不需再補錢">
               <div>
-                <span class="font-semibold t-down">✅ 11-24 (剩12天)</span>
+                <span class="font-semibold t-down">✅ 11-24 (剩7天)</span>
                 <span class="text-[10px] t-text-muted ml-1">借30萬</span>
               </div>
               <div class="text-right">
@@ -1022,7 +1011,7 @@
           
             <div class="flex items-center justify-between t-bg-card px-2.5 py-1.5 rounded border t-border opacity-70" title="R欄已填繳息日：2026-11-06，本波已繳清不需再補錢">
               <div>
-                <span class="font-semibold t-down">✅ 11-25 (剩13天)</span>
+                <span class="font-semibold t-down">✅ 11-25 (剩8天)</span>
                 <span class="text-[10px] t-text-muted ml-1">借10萬</span>
               </div>
               <div class="text-right">
@@ -1033,7 +1022,7 @@
           
             <div class="flex items-center justify-between t-bg-card px-2.5 py-1.5 rounded border t-border opacity-70" title="R欄已填繳息日：2026-11-09，本波已繳清不需再補錢">
               <div>
-                <span class="font-semibold t-down">✅ 11-26 (剩14天)</span>
+                <span class="font-semibold t-down">✅ 11-26 (剩9天)</span>
                 <span class="text-[10px] t-text-muted ml-1">借10萬</span>
               </div>
               <div class="text-right">
@@ -1044,7 +1033,7 @@
           
             <div class="flex items-center justify-between t-bg-card px-2.5 py-1.5 rounded border t-border" title="預計 2026-12-09 進入到期前 20 天繳息窗口">
               <div>
-                <span class="font-semibold t-text-main">🟡 12-29 (剩47天)</span>
+                <span class="font-semibold t-text-main">🟡 12-29 (剩42天)</span>
                 <span class="text-[10px] t-text-muted ml-1">借34.5萬</span>
               </div>
               <div class="text-right">
@@ -1055,7 +1044,7 @@
           
             <div class="flex items-center justify-between t-bg-card px-2.5 py-1.5 rounded border t-border" title="預計 2026-12-09 進入到期前 20 天繳息窗口">
               <div>
-                <span class="font-semibold t-text-main">🟡 12-29 (剩47天)</span>
+                <span class="font-semibold t-text-main">🟡 12-29 (剩42天)</span>
                 <span class="text-[10px] t-text-muted ml-1">借25萬</span>
               </div>
               <div class="text-right">
@@ -1066,7 +1055,7 @@
           
             <div class="flex items-center justify-between t-bg-card px-2.5 py-1.5 rounded border t-border" title="預計 2026-12-10 進入到期前 20 天繳息窗口">
               <div>
-                <span class="font-semibold t-text-main">🟡 12-30 (剩48天)</span>
+                <span class="font-semibold t-text-main">🟡 12-30 (剩43天)</span>
                 <span class="text-[10px] t-text-muted ml-1">借30萬</span>
               </div>
               <div class="text-right">
@@ -1077,7 +1066,7 @@
           
             <div class="flex items-center justify-between t-bg-card px-2.5 py-1.5 rounded border t-border" title="預計 2026-12-12 進入到期前 20 天繳息窗口">
               <div>
-                <span class="font-semibold t-text-main">🟡 01-01 (剩50天)</span>
+                <span class="font-semibold t-text-main">🟡 01-01 (剩45天)</span>
                 <span class="text-[10px] t-text-muted ml-1">借10萬</span>
               </div>
               <div class="text-right">
@@ -1101,22 +1090,22 @@
               </div>
               <div class="text-right">
                 <div class="text-[10px] t-text-muted">整戶維持率 (M2)</div>
-                <div id="pledgeYuantaCurrRatio" class="text-base sm:text-lg font-bold t-up">218.63%</div>
+                <div id="pledgeYuantaCurrRatio" class="text-base sm:text-lg font-bold t-up">210.15%</div>
               </div>
             </div>
 
             <div class="grid grid-cols-3 gap-2 text-center t-bg-card p-2.5 rounded-lg border t-border">
               <div>
                 <div class="text-[10px] t-text-muted">擔保市值(M6) / 自由庫存</div>
-                <div id="pledgeYuantaMvText" class="font-bold t-text-main mt-0.5">1025.4萬 / <span class="t-up">42.5萬</span></div>
+                <div id="pledgeYuantaMvText" class="font-bold t-text-main mt-0.5">985.6萬 / <span class="t-up">41.1萬</span></div>
               </div>
               <div>
                 <div class="text-[10px] t-text-muted">含自由庫存維持率 (N2)</div>
-                <div id="pledgeYuantaMaxRatio" class="font-bold t-up mt-0.5">227.69%</div>
+                <div id="pledgeYuantaMaxRatio" class="font-bold t-up mt-0.5">218.90%</div>
               </div>
               <div>
                 <div class="text-[10px] t-text-muted">170% 安全線對應大盤</div>
-                <div id="pledgeYuantaBuffer" class="font-bold t-text-sub mt-0.5">33,508點 (緩衝 -22.2%)</div>
+                <div id="pledgeYuantaBuffer" class="font-bold t-text-sub mt-0.5">32,430點 (緩衝 -19.1%)</div>
               </div>
             </div>
 
@@ -1146,14 +1135,14 @@
             </div>
           </div>
         </div>
-              <div id="pledgeYuantaAlertHeader" class="font-semibold t-text-sub pt-1">⚠️ 單筆借據維持率低於 170% 提醒（整戶 M2 已由額外擔保 26 張拉升至 218.63%）：</div>
+              <div id="pledgeYuantaAlertHeader" class="font-semibold t-text-sub pt-1">⚠️ 單筆借據維持率低於 170% 提醒（整戶 M2 已由額外擔保 26 張拉升至 210.15%）：</div>
               <div id="pledgeYuantaAlertList" class="space-y-1">
         <div class="flex items-center justify-between t-bg-card px-2.5 py-1.5 rounded border t-border">
           <div>
             <span class="font-semibold t-text-main">2025-11-10 借 110萬</span>
             <span class="text-[11px] t-text-muted ml-1">(00878 (56張))</span>
           </div>
-          <span class="font-bold t-up">維持率 168% (接近167%)</span>
+          <span class="font-bold t-down">維持率 157.11% (低於167%)</span>
         </div>
       
         <div class="flex items-center justify-between t-bg-card px-2.5 py-1.5 rounded border t-border">
@@ -1161,7 +1150,7 @@
             <span class="font-semibold t-text-main">2026-10-02 借 50萬</span>
             <span class="text-[11px] t-text-muted ml-1">(00878 (25張))</span>
           </div>
-          <span class="font-bold t-down">維持率 165% (低於167%)</span>
+          <span class="font-bold t-down">維持率 154.3% (低於167%)</span>
         </div>
       </div>
             </div>
@@ -1517,10 +1506,10 @@
             <p class="text-xs t-text-muted mt-0.5">同步自「個人資產報表 (AC:AL)」與「現金流ETF存股」：4 檔高股息 + 3 檔債券 ETF 構成質押與套利的核心底倉。</p>
           </div>
           <div class="flex flex-wrap items-center gap-2 text-xs">
-            <span class="px-2.5 py-1 rounded-lg t-bg-card2 border t-border">核心總張數：<strong id="coreEtfLotsBadge" class="t-text-main tabular-nums">529.22 張</strong></span>
-            <span id="coreEtfYieldBadge" class="px-2.5 py-1 rounded-lg t-bg-card2 border t-border">成本殖利率：<strong class="t-up tabular-nums">9.88%</strong> (市值殖利率 7.46%)</span>
+            <span class="px-2.5 py-1 rounded-lg t-bg-card2 border t-border">核心總張數：<strong id="coreEtfLotsBadge" class="t-text-main tabular-nums">530.14 張</strong></span>
+            <span id="coreEtfYieldBadge" class="px-2.5 py-1 rounded-lg t-bg-card2 border t-border">成本殖利率：<strong class="t-up tabular-nums">9.85%</strong> (市值殖利率 7.68%)</span>
             <span id="coreEtfMonthlyDivBadge" class="px-2.5 py-1 rounded-lg t-bg-card2 border t-border">核心月配息：<strong class="t-up tabular-nums">NT$102,448 / 月</strong> (年配 122.9萬)</span>
-            <span class="px-2.5 py-1 rounded-lg t-bg-card2 border t-border">核心庫存損益：<strong id="coreEtfPnlBadge" class="t-up tabular-nums">+NT$4,036,754 (+32.43%)</strong></span>
+            <span class="px-2.5 py-1 rounded-lg t-bg-card2 border t-border">核心庫存損益：<strong id="coreEtfPnlBadge" class="t-up tabular-nums">+NT$3,527,482 (+28.26%)</strong></span>
           </div>
         </div>
 
@@ -1544,7 +1533,7 @@
           <div class="t-bg-card2 rounded-xl border t-border p-3 flex flex-col justify-between">
             <div class="flex items-center justify-between mb-2">
               <span class="text-xs font-bold t-text-main">📅 全帳戶 1～12 月預估除息現金流分佈</span>
-              <span id="monthlyExDivTotalBadge" class="text-[11px] t-text-muted">核心約 139.4 萬 (全戶 156.3 萬)</span>
+              <span id="monthlyExDivTotalBadge" class="text-[11px] t-text-muted">核心約 139.8 萬 (全戶 156.3 萬)</span>
             </div>
             <div class="relative h-56 w-full">
               <canvas id="monthlyExDivChart" style="box-sizing: border-box; display: block; height: 0px; width: 0px;" width="0" height="0"></canvas>
@@ -1568,28 +1557,28 @@
       <div class="grid grid-cols-2 lg:grid-cols-5 gap-3">
         <div class="t-bg-card rounded-xl border t-border p-3.5">
           <div class="text-xs t-text-muted font-medium">個人淨資產 (不含房產)</div>
-          <div id="wealthKpiNetWorth" class="mt-1 text-lg sm:text-xl font-bold tabular-nums t-up">NT$7,727,510</div>
-          <div id="wealthKpiNetWorthSub" class="mt-1 text-[11px] t-text-sub">含房產(995萬)達 <strong class="t-text-main">1767.8萬</strong>｜負債比 78.54%</div>
+          <div id="wealthKpiNetWorth" class="mt-1 text-lg sm:text-xl font-bold tabular-nums t-up">NT$6,213,616</div>
+          <div id="wealthKpiNetWorthSub" class="mt-1 text-[11px] t-text-sub">含房產(995萬)達 <strong class="t-text-main">1616.4萬</strong>｜負債比 81.99%</div>
         </div>
         <div class="t-bg-card rounded-xl border t-border p-3.5">
-          <div id="wealthKpiAssetTitle" class="text-xs t-text-muted font-medium">總資產規模 (56.01%)</div>
-          <div id="wealthKpiTotalAssets" class="mt-1 text-lg sm:text-xl font-bold tabular-nums t-text-main">NT$36,017,108</div>
-          <div id="wealthKpiTotalAssetsSub" class="mt-1 text-[11px] t-text-sub">股票 73.6%｜基金 17.5%｜現金 6.0%｜保/定 2.9%</div>
+          <div id="wealthKpiAssetTitle" class="text-xs t-text-muted font-medium">總資產規模 (54.95%)</div>
+          <div id="wealthKpiTotalAssets" class="mt-1 text-lg sm:text-xl font-bold tabular-nums t-text-main">NT$34,503,214</div>
+          <div id="wealthKpiTotalAssetsSub" class="mt-1 text-[11px] t-text-sub">股票 74.3%｜基金 16.8%｜現金 5.9%｜保/定 3.0%</div>
         </div>
         <div class="t-bg-card rounded-xl border t-border p-3.5">
-          <div id="wealthKpiDebtTitle" class="text-xs t-text-muted font-medium">總負債規模 (43.99%)</div>
+          <div id="wealthKpiDebtTitle" class="text-xs t-text-muted font-medium">總負債規模 (45.05%)</div>
           <div id="wealthKpiTotalDebt" class="mt-1 text-lg sm:text-xl font-bold tabular-nums t-down">NT$28,289,598</div>
           <div class="mt-1 text-[11px] t-text-sub">代操 36.4%｜質押 33.1%｜房貸 27.6%｜信貸 2.9%</div>
         </div>
         <div class="t-bg-card rounded-xl border t-border p-3.5">
           <div class="text-xs t-text-muted font-medium">每月收支與財富自由度</div>
           <div id="wealthKpiMonthlySurplus" class="mt-1 text-lg sm:text-xl font-bold tabular-nums t-up">+NT$18,756 <span class="text-xs font-normal t-text-muted">/月結餘</span></div>
-          <div id="wealthKpiFiSub" class="mt-1 text-[11px] t-text-sub">純配息自由度 <strong class="t-up">81.95%</strong>｜含價差達 <strong class="t-up">207.2%</strong></div>
+          <div id="wealthKpiFiSub" class="mt-1 text-[11px] t-text-sub">純配息自由度 <strong class="t-up">82.30%</strong>｜含價差達 <strong class="t-up">207.2%</strong></div>
         </div>
         <div class="t-bg-card rounded-xl border t-border p-3.5 col-span-2 lg:col-span-1">
           <div class="text-xs t-text-muted font-medium">槓桿月套利 &amp; 安全緩衝</div>
-          <div id="wealthKpiArbMonthly" class="mt-1 text-lg sm:text-xl font-bold tabular-nums t-up">+NT$101,775 <span class="text-xs font-normal t-text-muted">/月套利</span></div>
-          <div id="wealthKpiArbSub" class="mt-1 text-[11px] t-text-sub">利差 <strong class="t-up">+4.60%</strong> (8.46%-3.86%)｜現金緩衝 <strong class="t-text-main">13.68個月</strong></div>
+          <div id="wealthKpiArbMonthly" class="mt-1 text-lg sm:text-xl font-bold tabular-nums t-up">+NT$108,221 <span class="text-xs font-normal t-text-muted">/月套利</span></div>
+          <div id="wealthKpiArbSub" class="mt-1 text-[11px] t-text-sub">利差 <strong class="t-up">+4.87%</strong> (8.73%-3.86%)｜現金緩衝 <strong class="t-text-main">12.78個月</strong></div>
         </div>
       </div>
 
@@ -1607,7 +1596,7 @@
         <div class="t-bg-card rounded-xl border t-border p-4">
           <div class="flex items-center justify-between mb-3">
             <h3 class="text-xs sm:text-sm font-bold t-text-main">📈 近 30 日淨資產、股票市值與整體維持率走勢</h3>
-            <span id="wealthHistorySubtitle" class="text-[11px] t-text-muted">同步自「自動記錄 (10/14~11/12)」</span>
+            <span id="wealthHistorySubtitle" class="text-[11px] t-text-muted">同步自「自動記錄 (10/19~11/17)」</span>
           </div>
           <div class="relative h-64 w-full">
             <canvas id="wealthHistoryChart" style="box-sizing: border-box; display: block; height: 0px; width: 0px;" width="0" height="0"></canvas>
@@ -1622,7 +1611,7 @@
           <div class="flex items-center justify-between">
             <div>
               <h3 class="text-xs sm:text-sm font-bold t-text-main">🏦 全景資產配置明細表（現金 10 戶 + 股票 4 戶 + 基金/定投/保險）</h3>
-              <p id="wealthCashSubText" class="text-[11px] t-text-muted">現金合計 NT$2,174,578（年支 184.2萬之 1.18 倍，超出安全水位 +NT$332,266）</p>
+              <p id="wealthCashSubText" class="text-[11px] t-text-muted">現金合計 NT$2,031,383（年支 184.2萬之 1.10 倍，超出安全水位 +NT$189,071）</p>
             </div>
             <span class="text-[11px] t-text-muted">點擊表頭排序</span>
           </div>
@@ -1647,7 +1636,7 @@
           <div class="flex items-center justify-between">
             <div>
               <h3 class="text-xs sm:text-sm font-bold t-text-main">⚡ 四大借貸槓桿與套利利差矩陣（總負債 NT$28,289,598）</h3>
-              <p id="wealthDebtSubText" class="text-[11px] t-text-muted">以核心存股殖利率 8.46% 對沖平均借貸成本 3.86%，每月創造 +NT$101,775 淨現金流套利</p>
+              <p id="wealthDebtSubText" class="text-[11px] t-text-muted">以核心存股殖利率 8.73% 對沖平均借貸成本 3.86%，每月創造 +NT$108,221 淨現金流套利</p>
             </div>
             <span class="text-[11px] t-text-muted">點擊表頭排序</span>
           </div>
@@ -1676,8 +1665,8 @@
             <p id="wealthExpenseSubText" class="text-[11px] t-text-muted">月總收入 NT$172,282（TBC 薪資可支配 42,000 + 月配息 130,282） vs 報表月支出 NT$153,526（含稅費攤提滿載為 NT$158,972）</p>
           </div>
           <div class="flex items-center gap-2 text-xs">
-            <span class="px-2.5 py-1 rounded-lg t-bg-card2 border t-border">純複利達標月數：<strong id="wealthFiMonthsBadge" class="t-text-main tabular-nums">約 66.0 個月</strong></span>
-            <span class="px-2.5 py-1 rounded-lg t-bg-card2 border t-border">距離純配息 100% 自由尚需本金：<strong id="wealthFiGapBadge" class="t-up tabular-nums">約 NT$3,298,112</strong></span>
+            <span class="px-2.5 py-1 rounded-lg t-bg-card2 border t-border">純複利達標月數：<strong id="wealthFiMonthsBadge" class="t-text-main tabular-nums">約 62.4 個月</strong></span>
+            <span class="px-2.5 py-1 rounded-lg t-bg-card2 border t-border">距離純配息 100% 自由尚需本金：<strong id="wealthFiGapBadge" class="t-up tabular-nums">約 NT$3,120,170</strong></span>
           </div>
         </div>
         <div class="overflow-x-auto max-h-96 overflow-y-auto">
@@ -1706,35 +1695,35 @@
         <div class="t-bg-card rounded-xl border t-border p-3.5 space-y-1.5">
           <div class="flex items-center justify-between">
             <span class="text-xs t-text-muted font-medium">👑 中信目前認列 AUM (計投入本金)</span>
-            <span id="tisaKpiAumPct" class="text-xs font-bold px-2 py-0.5 rounded-full t-bg-card2 t-up">64.33%</span>
+            <span id="tisaKpiAumPct" class="text-xs font-bold px-2 py-0.5 rounded-full t-bg-card2 t-up">64.28%</span>
           </div>
-          <div id="tisaKpiAumVal" class="text-xl font-bold tabular-nums t-text-main">NT$9,649,637</div>
+          <div id="tisaKpiAumVal" class="text-xl font-bold tabular-nums t-text-main">NT$9,642,616</div>
           <div class="w-full h-2 rounded-full t-bg-card2 overflow-hidden">
-            <div id="tisaKpiAumBar" class="h-full rounded-full" style="width: 64.33%; background: var(--up-color);"></div>
+            <div id="tisaKpiAumBar" class="h-full rounded-full" style="width: 64.28%; background: var(--up-color);"></div>
           </div>
-          <div id="tisaKpiAumSub" class="text-[11px] t-text-sub">TISA本金 600萬 + 房貸40% 312.0萬 + 現金 53.0萬（距 1,500萬差 <strong class="t-text-main">535.0萬</strong>）</div>
+          <div id="tisaKpiAumSub" class="text-[11px] t-text-sub">TISA本金 600萬 + 房貸40% 312.0萬 + 現金 52.3萬（距 1,500萬差 <strong class="t-text-main">535.7萬</strong>）</div>
         </div>
 
         <div class="t-bg-card rounded-xl border t-border p-3.5 space-y-1.5">
           <div class="flex items-center justify-between">
             <span class="text-xs t-text-muted font-medium">🔓 贖回重扣觸發總值 (計實際淨值)</span>
-            <span id="tisaKpiNavPct" class="text-xs font-bold px-2 py-0.5 rounded-full t-bg-card2 t-text-main">61.53%</span>
+            <span id="tisaKpiNavPct" class="text-xs font-bold px-2 py-0.5 rounded-full t-bg-card2 t-text-main">58.10%</span>
           </div>
-          <div id="tisaKpiNavVal" class="text-xl font-bold tabular-nums t-text-main">NT$9,229,536</div>
+          <div id="tisaKpiNavVal" class="text-xl font-bold tabular-nums t-text-main">NT$8,714,832</div>
           <div class="w-full h-2 rounded-full t-bg-card2 overflow-hidden">
-            <div id="tisaKpiNavBar" class="h-full rounded-full" style="width: 61.53%; background: var(--accent-bg);"></div>
+            <div id="tisaKpiNavBar" class="h-full rounded-full" style="width: 58.1%; background: var(--accent-bg);"></div>
           </div>
-          <div id="tisaKpiNavSub" class="text-[11px] t-text-sub">TISA淨值 558.0萬 + 房貸40% 312.0萬 + 現金 53.0萬（淨值目標進度 <strong class="t-up">46.97%</strong>）</div>
+          <div id="tisaKpiNavSub" class="text-[11px] t-text-sub">TISA淨值 507.2萬 + 房貸40% 312.0萬 + 現金 52.3萬（淨值目標進度 <strong class="t-up">42.69%</strong>）</div>
         </div>
 
         <div class="t-bg-card rounded-xl border t-border p-3.5 space-y-1.5">
           <div class="flex items-center justify-between">
-            <span id="tisaKpiFundTitle" class="text-xs t-text-muted font-medium">🌱 TISA 雙核心基金總覽 (11/11 淨值)</span>
-            <span id="tisaKpiFundPnlPct" class="text-xs font-bold tabular-nums t-down">-7.00%</span>
+            <span id="tisaKpiFundTitle" class="text-xs t-text-muted font-medium">🌱 TISA 雙核心基金總覽 (11/16 淨值)</span>
+            <span id="tisaKpiFundPnlPct" class="text-xs font-bold tabular-nums t-down">-15.46%</span>
           </div>
-          <div id="tisaKpiFundMv" class="text-xl font-bold tabular-nums t-text-main">NT$5,579,899</div>
+          <div id="tisaKpiFundMv" class="text-xl font-bold tabular-nums t-text-main">NT$5,072,217</div>
           <div id="tisaKpiFundSub" class="text-[11px] t-text-sub">累積已投入 <strong class="t-text-main">NT$6,000,000</strong>（兩檔各 300萬；11/25 在途 +10萬達 610萬）</div>
-          <div id="tisaKpiFundPnl" class="text-[11px] t-down font-semibold tabular-nums">庫存損益：NT$-420,101（2027起每月各固定扣 2 萬）</div>
+          <div id="tisaKpiFundPnl" class="text-[11px] t-down font-semibold tabular-nums">庫存損益：NT$-927,783（2027起每月各固定扣 2 萬）</div>
         </div>
 
         <div class="t-bg-card rounded-xl border t-border p-3.5 space-y-1.5">
@@ -1742,9 +1731,9 @@
             <span class="text-xs t-text-muted font-medium">🏦 中信扣款資金池與安全底線</span>
             <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-400">⚠️ 緩衝提醒</span>
           </div>
-          <div id="tisaKpiCashVal" class="text-xl font-bold tabular-nums t-text-main">NT$530,074</div>
+          <div id="tisaKpiCashVal" class="text-xl font-bold tabular-nums t-text-main">NT$523,053</div>
           <div class="text-[11px] t-text-sub">2027起月扣 <strong class="t-text-main">NT$40,000</strong> (各2萬)｜保留底線 <strong class="t-text-main">NT$550,000</strong> (50萬+房貸5萬)</div>
-          <div id="tisaKpiCashBuf" class="text-[11px] t-down font-semibold tabular-nums">剩餘可扣款資金：NT$-19,926（有閒錢才額外加速投入）</div>
+          <div id="tisaKpiCashBuf" class="text-[11px] t-down font-semibold tabular-nums">剩餘可扣款資金：NT$-26,947（有閒錢才額外加速投入）</div>
         </div>
       </div>
 
@@ -1845,7 +1834,7 @@
             </div>
             <p class="t-text-main font-semibold">不看短線漲跌，每月固定各扣 2 萬（共 4 萬/月）穩健推進</p>
             <ul class="space-y-1.5 t-text-sub list-disc list-inside leading-relaxed">
-              <li id="tisaStage1AumText">目前兩檔基金已各投入 <strong>300 萬（共 600 萬）</strong>，加計房貸 40%（312.0 萬）與中信現金（53.0 萬），中信認列 AUM 為 <strong>965.0 萬（64.33%）</strong>。</li>
+              <li id="tisaStage1AumText">目前兩檔基金已各投入 <strong>300 萬（共 600 萬）</strong>，加計房貸 40%（312.0 萬）與中信現金（52.3 萬），中信認列 AUM 為 <strong>964.3 萬（64.28%）</strong>。</li>
               <li>後續不再依季線漲跌變動扣款金額，一律先按<strong>每月各投入 2 萬（年增 48 萬本金）</strong>保守推估；若有額外閒置資金才手動加速投入。</li>
             </ul>
           </div>
@@ -1893,7 +1882,7 @@
               <span>📥</span><span>下載 GitHub 專用 index.html</span>
             </button>
             <button onclick="copyIndexHtmlCode()" class="t-bg-card2 t-text-main border t-border font-bold text-xs px-3.5 py-2 rounded-lg hover:opacity-90 transition flex items-center gap-1.5">
-              <span>📋</span><span id="copyGhHtmlBtnText">已複製 GitHub index.html！</span>
+              <span>📋</span><span id="copyGhHtmlBtnText">複製 GitHub index.html 原始碼</span>
             </button>
           </div>
         </div>
@@ -1962,10 +1951,10 @@
           </div>
           <div class="flex flex-wrap items-center gap-2">
             <button onclick="copyGasCode()" style="background: var(--accent-bg); color: var(--accent-text);" class="font-bold text-xs px-3.5 py-2 rounded-lg shadow hover:opacity-90 transition flex items-center gap-1.5">
-              <span>📋</span><span id="copyBtnText">已複製 Code.gs！</span>
+              <span>📋</span><span id="copyBtnText">步驟 1：一鍵複製 Code.gs</span>
             </button>
             <button onclick="copyIndexHtmlCode()" class="t-bg-card2 t-text-main border t-border font-bold text-xs px-3.5 py-2 rounded-lg shadow hover:opacity-90 transition flex items-center gap-1.5">
-              <span>🎨</span><span id="copyHtmlBtnText">已複製 Index.html！</span>
+              <span>🎨</span><span id="copyHtmlBtnText">步驟 2：一鍵複製 Index.html</span>
             </button>
           </div>
         </div>
@@ -2246,8 +2235,8 @@
 
   <!-- Toast 通知 -->
   <div id="appToast" class="fixed bottom-4 right-4 z-50 t-bg-card2 border t-border t-text-main px-4 py-2.5 rounded-xl shadow-2xl text-xs font-medium flex items-center gap-2 hidden">
-    <span id="toastIcon">🎨</span>
-    <span id="toastMessage">已複製完整 HTML (內建密碼 6790 與您目前選定的護眼配色)！</span>
+    <span id="toastIcon">🔓</span>
+    <span id="toastMessage">歡迎回來！戰情室已解鎖</span>
   </div>
 
 
@@ -3020,8 +3009,58 @@
       "        }",
       "      } catch (ce) {}",
       "",
+      "      // 讀取【儀表板】累計價差 Top 10",
+      "      let top10_cap_stocks = null;",
+      "      try {",
+      "        const dSheet = srcSs.getSheetByName('儀表板');",
+      "        if (dSheet) {",
+      "          const t10Rows = dSheet.getRange(4, 2, 10, 3).getValues();",
+      "          top10_cap_stocks = t10Rows.filter(r => r[0]).map(r => ({",
+      "            code: String(r[0]).trim().replace(/\\.0$/, ''),",
+      "            name: String(r[1] || '').trim(),",
+      "            pnl: Math.round(Number(r[2]) || 0)",
+      "          }));",
+      "        }",
+      "      } catch (t10e) {}",
+      "",
+      "      // 讀取【價差】歷史已實現交易明細",
+      "      let trades = null;",
+      "      try {",
+      "        const capSheet = srcSs.getSheetByName('價差');",
+      "        if (capSheet && capSheet.getLastRow() >= 7) {",
+      "          const capRows = capSheet.getRange(7, 2, capSheet.getLastRow() - 6, 3).getValues();",
+      "          const typeMap = {};",
+      "          stocks.forEach(s => { typeMap[s.code] = s.type; });",
+      "          const classifyCat = (code, name) => {",
+      "            const t = typeMap[code] || '';",
+      "            if (t === '高股息' || ['00929','00939','00940','00944'].indexOf(code) !== -1) return '高股息 ETF';",
+      "            if (t === '金融股') return '金融股';",
+      "            if (t.indexOf('槓桿') !== -1 || code.slice(-1) === 'L') return '國內外正2槓桿';",
+      "            if (t === '主動型 ETF' || code.slice(-1) === 'A' || code === '00982D') return '主動型 ETF';",
+      "            if (t.indexOf('市值型') !== -1 || ['006208','00922','00924','00757','00830','009809','009820','009823','009824'].indexOf(code) !== -1) return '國內外市值型';",
+      "            return '傳產與其他個股';",
+      "          };",
+      "          trades = capRows.filter(r => r[0] && r[1] && r[2] !== '' && r[2] !== null).map(r => {",
+      "            const dtStr = (r[0] instanceof Date) ? Utilities.formatDate(r[0], 'Asia/Taipei', 'yyyy-MM-dd') : String(r[0]).slice(0, 10);",
+      "            const rawTarget = String(r[1]).trim().replace(/\\t+/g, ' ');",
+      "            const spIdx = rawTarget.indexOf(' ');",
+      "            const tCode = spIdx > 0 ? rawTarget.slice(0, spIdx).trim() : rawTarget;",
+      "            const tName = spIdx > 0 ? rawTarget.slice(spIdx + 1).trim() : rawTarget;",
+      "            return {",
+      "              date: dtStr,",
+      "              code: tCode,",
+      "              name: tName,",
+      "              category: classifyCat(tCode, tName),",
+      "              pnl: Math.round(Number(r[2]) || 0)",
+      "            };",
+      "          });",
+      "        }",
+      "      } catch (tre) {}",
+      "",
       "      quant = {",
       "        monthly_history: monthly_history,",
+      "        top10_cap_stocks: top10_cap_stocks,",
+      "        trades: trades,",
       "        capital_pledge: capital_pledge,",
       "        yuanta_pledge: {",
       "          m2: yuanta_m2,",
@@ -3092,7 +3131,7 @@
       "  } catch (re) {}",
       "",
       "  // 6. 同步從「儀表板 (1x-joS4OMGfFfUtxucqg5em6N7szBohyBQikWsON51dM)」讀取【自動記錄】、【個人資產報表】與【現金流ETF存股】",
-      "  let wealth_history_30d = null, wealth_kpis = null, wealth_assets = null, core_etfs = null, monthly_ex_div = null;",
+      "  let wealth_history_30d = null, wealth_kpis = null, wealth_assets = null, wealth_debts = null, wealth_expenses = null, core_etfs = null, monthly_ex_div = null;",
       "  try {",
       "    const astSs = SpreadsheetApp.openById(CONFIG.ASSET_DASHBOARD_ID);",
       "    const logSheet = astSs.getSheetByName('自動記錄');",
@@ -3146,7 +3185,7 @@
       "      };",
       "",
       "      if (paSheet) {",
-      "        const paGrid = paSheet.getRange(1, 1, 30, 39).getValues();",
+      "        const paGrid = paSheet.getRange(1, 1, 50, 39).getValues();",
       "        wealth_kpis.monthlyIncome = Math.round(Number(paGrid[3][12]) || 172282);",
       "        wealth_kpis.monthlyExpense = Math.round(Number(paGrid[3][16]) || 153526);",
       "        wealth_kpis.monthlyExpenseFull = Math.round(Number(r2[11]) || 158972);",
@@ -3202,6 +3241,136 @@
       "            pnl: cPnl,",
       "            pnlPct: cCost > 0 ? Number((cPnl / cCost * 100).toFixed(2)) : 0",
       "          });",
+      "        }",
+      "",
+      "        // 動態讀取【個人資產報表】全景資產明細 (B4:E28)",
+      "        const syncTag = Utilities.formatDate(new Date(), 'Asia/Taipei', 'MM/dd');",
+      "        const totA_pa = Number(paGrid[3][4]) || wealth_kpis.totalAssets || 1;",
+      "        const cashG = Number(paGrid[4][4]) || wealth_kpis.cashTotal || 1;",
+      "        const stkG = Number(paGrid[16][4]) || wealth_kpis.stockTotal || 1;",
+      "        const fndG = Number(paGrid[21][4]) || wealth_kpis.fundTotal || 1;",
+      "        const regG = Number(paGrid[24][4]) || 505000;",
+      "        const insG = Number(paGrid[26][4]) || 542700;",
+      "        const catStk = '股票部位 (' + (stkG / totA_pa * 100).toFixed(1) + '%)';",
+      "        const catFnd = '基金部位 (' + (fndG / totA_pa * 100).toFixed(1) + '%)';",
+      "        const catCsh = '現金部位 (' + (cashG / totA_pa * 100).toFixed(1) + '%)';",
+      "        const catIns = '保險價值 (' + (insG / totA_pa * 100).toFixed(1) + '%)';",
+      "        const catReg = '定投帳戶 (' + (regG / totA_pa * 100).toFixed(1) + '%)';",
+      "        const mkA = (cat, item, amt, grp, note) => ({",
+      "          category: cat,",
+      "          item: item,",
+      "          amount: Math.round(Number(amt) || 0),",
+      "          groupShare: grp > 0 ? Number(((Number(amt) || 0) / grp * 100).toFixed(2)) : 0,",
+      "          totalShare: totA_pa > 0 ? Number(((Number(amt) || 0) / totA_pa * 100).toFixed(2)) : 0,",
+      "          note: note",
+      "        });",
+      "        const assetNoteMap = {",
+      "          '群益': ['群益證券 (主力存股/質押/波段)', '含質押擔保品與波段部位 (' + syncTag + ')'],",
+      "          '元大證金': ['元大證金 (核心高息質押庫存)', '254張設質 + 8張自由庫存 (' + syncTag + ')'],",
+      "          '國泰': ['國泰證券 (波段與市值ETF)', '免質押自有資金帳戶 (' + syncTag + ')'],",
+      "          '富邦': ['富邦日盛 (長期存股部位)', '長期領息與價差帳戶 (' + syncTag + ')'],",
+      "          '中信基金': ['中國信託 TISA 基金 (雙核心)', '投入本金 600萬｜最新淨值 (' + syncTag + ')'],",
+      "          '復華投信': ['復華投信基金', '復華投信部位'],",
+      "          '國泰世華': ['國泰世華銀行', '主力交割與備用金池 (' + syncTag + ')'],",
+      "          '中國信託': ['中國信託銀行', '房貸扣款與 TISA 資金池 (' + syncTag + ')'],",
+      "          '永豐大戶': ['永豐大戶 DAWHO', '高利活存備用金'],",
+      "          'LINE BANK': ['LINE Bank 連線銀行', '跨行轉帳與備用金'],",
+      "          '聯邦銀行': ['聯邦銀行 NewNewBank', '高利活存數位帳戶'],",
+      "          '彰銀+郵局': ['彰化銀行 + 中華郵政', '定存與常備周轉'],",
+      "          '群益一戶通': ['群益一戶通交割專戶', '群益證券交割與配息入帳池 (' + syncTag + ')'],",
+      "          '台新+台銀': ['台新銀行 + 台灣銀行', '常備儲蓄帳戶'],",
+      "          '台新Richart': ['台新 Richart', '數位活存帳戶'],",
+      "          '台北富邦': ['台北富邦銀行', '富邦信貸與證券交割'],",
+      "          '2039 凱基人壽': ['2039 凱基人壽保單價值', '儲蓄/壽險保單累積價值'],",
+      "          '林俊安': ['林俊安定投帳戶', '定投專案部位']",
+      "        };",
+      "        wealth_assets = [];",
+      "        for (let r = 17; r <= 20; r++) {",
+      "          const k = String(paGrid[r][1] || '').trim();",
+      "          const amt = Number(paGrid[r][2]) || 0;",
+      "          if (k && amt > 0) {",
+      "            const m = assetNoteMap[k] || [k, '即時同步 (' + syncTag + ')'];",
+      "            wealth_assets.push(mkA(catStk, m[0], amt, stkG, m[1]));",
+      "          }",
+      "        }",
+      "        [23, 22].forEach(r => {",
+      "          const k = String(paGrid[r][1] || '').trim();",
+      "          const amt = Number(paGrid[r][2]) || 0;",
+      "          if (k && amt > 0) {",
+      "            const m = assetNoteMap[k] || [k, '即時同步 (' + syncTag + ')'];",
+      "            wealth_assets.push(mkA(catFnd, m[0], amt, fndG, m[1]));",
+      "          }",
+      "        });",
+      "        for (let r = 5; r <= 15; r++) {",
+      "          const k = String(paGrid[r][1] || '').trim();",
+      "          const amt = Number(paGrid[r][2]) || 0;",
+      "          if (k && amt > 0) {",
+      "            const m = assetNoteMap[k] || [k, '即時同步 (' + syncTag + ')'];",
+      "            wealth_assets.push(mkA(catCsh, m[0], amt, cashG, m[1]));",
+      "          }",
+      "        }",
+      "        if (Number(paGrid[27][2]) > 0) {",
+      "          const m = assetNoteMap['2039 凱基人壽'];",
+      "          wealth_assets.push(mkA(catIns, m[0], paGrid[27][2], insG, m[1]));",
+      "        }",
+      "        if (Number(paGrid[25][2]) > 0) {",
+      "          const m = assetNoteMap['林俊安'];",
+      "          wealth_assets.push(mkA(catReg, m[0], paGrid[25][2], regG, m[1]));",
+      "        }",
+      "",
+      "        // 動態讀取【個人資產報表】四大借貸槓桿與套利矩陣",
+      "        const totD_pa = Number(paGrid[3][8]) || wealth_kpis.totalDebt || 1;",
+      "        const totArb = Number(paGrid[16][26]) || wealth_kpis.arbMonthly || 1;",
+      "        const mortPct = ((Number(paGrid[4][8]) || 7798907) / totD_pa * 100).toFixed(1);",
+      "        const pldPct = ((Number(paGrid[9][8]) || 9377825) / totD_pa * 100).toFixed(1);",
+      "        const crdPct = ((Number(paGrid[12][8]) || 822866) / totD_pa * 100).toFixed(1);",
+      "        const famPct = ((Number(paGrid[14][8]) || 10290000) / totD_pa * 100).toFixed(1);",
+      "        const mkD = (cat, item, prin, rateDec, mCost, annCost, arbM, note) => ({",
+      "          category: cat,",
+      "          item: item,",
+      "          principal: Math.round(Number(prin) || 0),",
+      "          rate: Number(((Number(rateDec) || 0) * 100).toFixed(2)),",
+      "          monthlyCost: Math.round(Number(mCost) || 0),",
+      "          annualCost: Math.round(Number(annCost) || 0),",
+      "          arbMonthly: Math.round(Number(arbM) || 0),",
+      "          arbShare: totArb > 0 ? Number(((Number(arbM) || 0) / totArb * 100).toFixed(1)) : 0,",
+      "          note: note",
+      "        });",
+      "        wealth_debts = [",
+      "          mkD('股票質押 (' + pldPct + '%)', '群益金鼎證金質押 (19筆)', paGrid[10][6], paGrid[23][20], paGrid[10][17], paGrid[23][22], paGrid[23][24], '維持率即時同步 (' + syncTag + ')'),",
+      "          mkD('股票質押 (' + pldPct + '%)', '元大證金股票質押 (8筆)', paGrid[11][6], paGrid[24][20], paGrid[11][17], paGrid[24][22], paGrid[24][24], '整戶維持率即時同步 (' + syncTag + ')'),",
+      "          mkD('家人代操 (' + famPct + '%)', '媽媽投資代操資金', paGrid[16][6], paGrid[29][20], paGrid[16][17], paGrid[29][22], paGrid[29][24], '每月固定分潤 41,700 元'),",
+      "          mkD('中國信託房貸 (' + mortPct + '%)', '中國信託 - 增貸 300 萬 (D)', paGrid[8][6], paGrid[21][20], paGrid[8][17], paGrid[21][22], paGrid[21][24], '2029/10 前寬限期僅繳息 6,625'),",
+      "          mkD('中國信託房貸 (' + mortPct + '%)', '中國信託 - 主房貸 (A)', paGrid[5][6], paGrid[18][20], paGrid[5][17], paGrid[18][22], paGrid[18][24], '2042/02 到期 (房貸 40% 認列 VIP)'),",
+      "          mkD('中國信託房貸 (' + mortPct + '%)', '中國信託 - 增貸 (B)', paGrid[6][6], paGrid[19][20], paGrid[6][17], paGrid[19][22], paGrid[19][24], '2042/02 到期'),",
+      "          mkD('中國信託房貸 (' + mortPct + '%)', '中國信託 - 增貸 (C)', paGrid[7][6], paGrid[20][20], paGrid[7][17], paGrid[20][22], paGrid[20][24], '2042/02 到期'),",
+      "          mkD('家人代操 (' + famPct + '%)', '爸爸投資代操資金', paGrid[15][6], paGrid[28][20], paGrid[15][17], paGrid[28][22], paGrid[28][24], '每月固定分潤 11,667 元'),",
+      "          mkD('銀行信貸 (' + crdPct + '%)', '台北富邦信用貸款', paGrid[13][6], paGrid[26][20], paGrid[13][17], paGrid[26][22], paGrid[26][24], '2031/07 到期清償 (月省 1.55萬)')",
+      "        ];",
+      "",
+      "        // 動態讀取【個人資產報表】每月固定支出拆解 (O5:R49)",
+      "        const totExp_pa = Number(paGrid[3][17]) || wealth_kpis.monthlyExpense || 153526;",
+      "        wealth_expenses = [];",
+      "        let curExpCat = '';",
+      "        for (let r = 4; r <= 48; r++) {",
+      "          const label = String(paGrid[r][14] || '').trim();",
+      "          if (!label) continue;",
+      "          if (label.indexOf('█') !== -1 || label.indexOf('░') !== -1) {",
+      "            const cAmt = Number(paGrid[r][17]) || 0;",
+      "            const cName = label.split(/[█░]/)[0].trim();",
+      "            curExpCat = cName + ' (' + (cAmt / totExp_pa * 100).toFixed(1) + '%)';",
+      "          } else {",
+      "            const mAmt = Number(paGrid[r][15]) || 0;",
+      "            if (mAmt > 0 || label.indexOf('iCloud') !== -1) {",
+      "              wealth_expenses.push({",
+      "                category: curExpCat,",
+      "                item: label,",
+      "                monthly: Math.round(mAmt),",
+      "                share: totExp_pa > 0 ? Number((mAmt / totExp_pa * 100).toFixed(2)) : 0,",
+      "                note: '同步自個人資產報表 (' + syncTag + ')'",
+      "              });",
+      "            }",
+      "          }",
       "        }",
       "      }",
       "    }",
@@ -3327,6 +3496,9 @@
       "    monthly_ex_div: monthly_ex_div,",
       "    wealth_history_30d: wealth_history_30d,",
       "    wealth_kpis: wealth_kpis,",
+      "    wealth_assets: wealth_assets,",
+      "    wealth_debts: wealth_debts,",
+      "    wealth_expenses: wealth_expenses,",
       "    tisa_data: tisa_data,",
       "    updatedAt: Utilities.formatDate(new Date(), 'Asia/Taipei', 'yyyy/MM/dd HH:mm:ss')",
       "  };",
@@ -4777,6 +4949,12 @@
       if (payload.quant && payload.quant.monthly_history) {
         QUANT_DATA.monthly_history = payload.quant.monthly_history;
       }
+      if (payload.quant && Array.isArray(payload.quant.top10_cap_stocks) && payload.quant.top10_cap_stocks.length > 0) {
+        QUANT_DATA.top10_cap_stocks = payload.quant.top10_cap_stocks;
+      }
+      if (payload.quant && Array.isArray(payload.quant.trades) && payload.quant.trades.length > 0) {
+        QUANT_DATA.trades = payload.quant.trades;
+      }
       if (payload.quant && payload.quant.capital_pledge) {
         const cp = payload.quant.capital_pledge;
         if (cp.twse_index) QUANT_DATA.pledge.twse_index = cp.twse_index;
@@ -4817,6 +4995,18 @@
       }
       if (payload.wealth_kpis) {
         WEALTH_TISA_DATA.wealthKpis = { ...WEALTH_TISA_DATA.wealthKpis, ...payload.wealth_kpis };
+        if (QUANT_DATA.wealth_goal && payload.wealth_kpis.cashTotal) {
+          QUANT_DATA.wealth_goal.cash_on_hand = payload.wealth_kpis.cashTotal;
+        }
+      }
+      if (Array.isArray(payload.wealth_assets) && payload.wealth_assets.length > 0) {
+        WEALTH_TISA_DATA.wealthAssets = payload.wealth_assets;
+      }
+      if (Array.isArray(payload.wealth_debts) && payload.wealth_debts.length > 0) {
+        WEALTH_TISA_DATA.wealthDebts = payload.wealth_debts;
+      }
+      if (Array.isArray(payload.wealth_expenses) && payload.wealth_expenses.length > 0) {
+        WEALTH_TISA_DATA.wealthExpenses = payload.wealth_expenses;
       }
       if (payload.tisa_data) {
         if (payload.tisa_data.summary) WEALTH_TISA_DATA.tisaSummary = { ...WEALTH_TISA_DATA.tisaSummary, ...payload.tisa_data.summary };
@@ -5060,7 +5250,8 @@
       const div2026 = m2026.reduce((a, b) => a + (b.div || 0), 0);
       const cap2026 = m2026.reduce((a, b) => a + (b.cap || 0), 0);
       const tot2026 = div2026 + cap2026;
-      const novCap = m2026[10] ? m2026[10].cap : 4236;
+      const activeMonths = Math.max(1, m2026.filter(m => (m.div || 0) !== 0 || (m.cap || 0) !== 0).length);
+      const lastActiveM = [...m2026].reverse().find(m => (m.cap || 0) !== 0) || m2026[10] || { month: 11, cap: 4236 };
       const divShare = tot2026 > 0 ? (div2026 / tot2026 * 100) : 38.0;
       const capShare = tot2026 > 0 ? (cap2026 / tot2026 * 100) : 62.0;
 
@@ -5106,11 +5297,11 @@
 
       // Top 5 KPI Cards
       document.getElementById('qKpiRealizedPnl').textContent = fmtSigned(tot2026);
-      document.getElementById('qKpiTradeCount').textContent = `1~11月月均 +${(tot2026 / 11 / 10000).toFixed(1)}萬 · 已實現 ${allTrades.length} 筆`;
+      document.getElementById('qKpiTradeCount').textContent = `1~${activeMonths}月月均 +${(tot2026 / activeMonths / 10000).toFixed(1)}萬 · 已實現 ${allTrades.length} 筆`;
       document.getElementById('qKpiWinRate').textContent = fmtSigned(div2026);
-      document.getElementById('qKpiWinLossCount').textContent = `佔比 ${divShare.toFixed(1)}% · 月均領息 ${(div2026 / 11 / 10000).toFixed(1)}萬`;
+      document.getElementById('qKpiWinLossCount').textContent = `佔比 ${divShare.toFixed(1)}% · 月均領息 ${(div2026 / activeMonths / 10000).toFixed(1)}萬`;
       document.getElementById('qKpiProfitFactor').textContent = fmtSigned(cap2026);
-      document.getElementById('qKpiMaxWin').textContent = `佔比 ${capShare.toFixed(1)}% · 11月 ${fmtSigned(novCap)}元`;
+      document.getElementById('qKpiMaxWin').textContent = `佔比 ${capShare.toFixed(1)}% · ${lastActiveM.month}月 ${fmtSigned(lastActiveM.cap)}元`;
       document.getElementById('qKpiRecent30d').textContent = goalPct.toFixed(1) + '%';
       document.getElementById('qKpiRecentTrend').textContent = `市值 ${(totalMv / 10000).toFixed(0)}萬 / 目標 ${(wg.target_mv / 10000).toFixed(0)}萬`;
       document.getElementById('qKpiTop5Conc').textContent = `${capPledgedRatio.toFixed(1)}% / ${yuaPledgedRatio.toFixed(1)}%`;
@@ -5840,6 +6031,18 @@
       const exSum = (WEALTH_TISA_DATA.monthlyExDiv || []).reduce((a, b) => a + b, 0);
       const elExBadge = document.getElementById('monthlyExDivTotalBadge');
       if (elExBadge && exSum > 0) elExBadge.textContent = `核心約 ${(exSum / 10000).toFixed(1)} 萬 (全戶 156.3 萬)`;
+      if (wk.coreCost > 0 && wk.coreMv > 0 && wk.coreMonthlyDiv > 0) {
+        const annCore = wk.coreMonthlyDiv * 12;
+        const cYield = (annCore / wk.coreCost * 100).toFixed(2);
+        const mYield = (annCore / wk.coreMv * 100).toFixed(2);
+        const elCY = document.getElementById('coreEtfYieldBadge');
+        if (elCY) elCY.innerHTML = `成本殖利率：<strong class="t-up tabular-nums">${cYield}%</strong> (市值殖利率 ${mYield}%)`;
+        const elCMD = document.getElementById('coreEtfMonthlyDivBadge');
+        if (elCMD) elCMD.innerHTML = `核心月配息：<strong class="t-up tabular-nums">NT$${fmtNum(wk.coreMonthlyDiv)} / 月</strong> (年配 ${(annCore / 10000).toFixed(1)}萬)`;
+        if (WEALTH_TISA_DATA.strategies && WEALTH_TISA_DATA.strategies[2] && wk.coreLots) {
+          WEALTH_TISA_DATA.strategies[2].targets = `0056、00713、00878、00919、00933B、00937B、00953B（核心7大底倉共 ${wk.coreLots.toFixed(2)} 張，市值 ${(wk.coreMv / 10000).toFixed(1)} 萬）`;
+        }
+      }
 
       // 1. 群益波段停利雷達
       const tpThead = document.getElementById('tpRadarThead');
